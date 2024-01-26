@@ -19,7 +19,7 @@ DEFENDER_SECRET<Your API secret>
 ## Usage
 
 ```
-npx @openzeppelin/defender-deploy-client-cli deploy --contractName <CONTRACT_NAME> --contractPath <CONTRACT_PATH> --chainId <CHAIN_ID> --artifactFile <BUILD_INFO_FILE_PATH> [--constructorBytecode <CONSTRUCTOR_ARGS>] [--licenseType <LICENSE>] [--verifySourceCode <true|false>] [--relayerId <RELAYER_ID>] [--salt <SALT>] [--createFactoryAddress <CREATE_FACTORY_ADDRESS>]
+npx @openzeppelin/defender-deploy-client-cli deploy --contractName <CONTRACT_NAME> --contractPath <CONTRACT_PATH> --chainId <CHAIN_ID> --artifactFile <BUILD_INFO_FILE_PATH> [--constructorBytecode <CONSTRUCTOR_BYTECODE>] [--licenseType <LICENSE>] [--verifySourceCode <true|false>] [--relayerId <RELAYER_ID>] [--salt <SALT>] [--createFactoryAddress <CREATE_FACTORY_ADDRESS>]
 
 Deploys a contract using OpenZeppelin Defender.
 
@@ -30,7 +30,7 @@ Required options:
   --artifactFile <BUILD_INFO_FILE_PATH>  Path to the build info file containing Solidity compiler input and output for the contract.
 
 Additional options:
-  --constructorBytecode <CONSTRUCTOR_BYTECODE>  COMING SOON, NOT CURRENTLY USED. This will be an ABI encoded byte string representing the constructor arguments. Required if the constructor has arguments.
+  --constructorBytecode <CONSTRUCTOR_BYTECODE>  ABI encoded byte string representing the constructor arguments. Required if the constructor has arguments.
   --licenseType <LICENSE>         License type for the contract. Recommended if verifying source code. Defaults to "None".
   --verifySourceCode <true|false>  Whether to verify source code on block explorers. Defaults to true.
   --relayerId <RELAYER_ID>        Relayer ID to use for deployment. Defaults to the relayer configured for your deployment environment on Defender.
