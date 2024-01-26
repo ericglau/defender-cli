@@ -35,7 +35,7 @@ export async function deployContract(args: FunctionArgs) {
     network: args.network,
     artifactPayload: buildInfoFileContents,
     licenseType: args.licenseType as SourceCodeLicense | undefined, // cast without validation but catch error from API below
-    // constructorBytecode: args.constructorBytecode, // TODO enable this when Defender SDK supports it
+    constructorBytecode: args.constructorBytecode,
     verifySourceCode: args.verifySourceCode,
     relayerId: args.relayerId,
     salt: args.salt,
