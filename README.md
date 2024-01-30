@@ -30,7 +30,7 @@ Required options:
   --artifactFile <BUILD_INFO_FILE_PATH>  Path to the build info file containing Solidity compiler input and output for the contract.
 
 Additional options:
-  --constructorBytecode <CONSTRUCTOR_BYTECODE>  ABI encoded byte string representing the constructor arguments. Required if the constructor has arguments.
+  --constructorBytecode <CONSTRUCTOR_BYTECODE>  0x-prefixed ABI encoded byte string representing the constructor arguments. Required if the constructor has arguments.
   --licenseType <LICENSE>         License type for the contract. Recommended if verifying source code. Defaults to "None".
   --verifySourceCode <true|false>  Whether to verify source code on block explorers. Defaults to true.
   --relayerId <RELAYER_ID>        Relayer ID to use for deployment. Defaults to the relayer configured for your deployment environment on Defender.
