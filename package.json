@@ -23,8 +23,8 @@
   },
   "dependencies": {
     "minimist": "^1.2.8",
-    "@openzeppelin/defender-sdk-deploy-client": "^1.8.0",
-    "@openzeppelin/defender-sdk-base-client": "^1.8.0",
+    "@openzeppelin/defender-sdk-deploy-client": "^1.9.0",
+    "@openzeppelin/defender-sdk-base-client": "^1.9.0",
     "dotenv": "^16.3.1"
   }
 }
