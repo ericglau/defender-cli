@@ -1,6 +1,7 @@
 import minimist from 'minimist';
-import { FunctionArgs, deployContract } from './deployContract';
+import { FunctionArgs, deployContract } from './deploy-contract';
 import { Network, fromChainId } from '@openzeppelin/defender-sdk-base-client';
+import { getDeployClient } from './client';
 
 const USAGE = 'Usage: npx @openzeppelin/defender-deploy-client-cli deploy --contractName <CONTRACT_NAME> --contractPath <CONTRACT_PATH> --chainId <CHAIN_ID> --artifactFile <BUILD_INFO_FILE_PATH> [--constructorBytecode <CONSTRUCTOR_ARGS>] [--licenseType <LICENSE>] [--verifySourceCode <true|false>] [--relayerId <RELAYER_ID>] [--salt <SALT>] [--createFactoryAddress <CREATE_FACTORY_ADDRESS>]';
 const DETAILS = `
@@ -27,7 +28,17 @@ export async function main(args: string[]): Promise<void> {
   if (!help(parsedArgs, extraArgs)) {
     const functionArgs = getFunctionArgs(parsedArgs, extraArgs);
 
-    const address = await deployContract(functionArgs);
+    require('dotenv').config();
+    const apiKey = process.env.DEFENDER_KEY as string;
+    const apiSecret = process.env.DEFENDER_SECRET as string;
+
+    if (apiKey === undefined || apiSecret === undefined) {
+      throw new Error('DEFENDER_KEY and DEFENDER_SECRET must be set in environment variables.');
+    }
+
+    const client = getDeployClient(apiKey, apiSecret);
+
+    const address = await deployContract(functionArgs, client);
     console.log(`Deployed to address: ${address}`);
   }
 }

@@ -16,17 +16,7 @@ export interface FunctionArgs {
   createFactoryAddress?: string;
 }
 
-export async function deployContract(args: FunctionArgs) {
-  require('dotenv').config();
-  const apiKey = process.env.DEFENDER_KEY as string;
-  const apiSecret = process.env.DEFENDER_SECRET as string;
-
-  if (apiKey === undefined || apiSecret === undefined) {
-    throw new Error('DEFENDER_KEY and DEFENDER_SECRET must be set in environment variables.');
-  }
-
-  const client = new DeployClient({ apiKey, apiSecret });
-
+export async function deployContract(args: FunctionArgs, client: DeployClient) {
   const buildInfoFileContents = await fs.readFile(args.artifactFile, 'utf8');
 
   const deploymentRequest: DeployContractRequest = {
