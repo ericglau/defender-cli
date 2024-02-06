@@ -1,7 +1,7 @@
 import minimist from 'minimist';
 import { FunctionArgs, deployContract } from '../internal/deploy-contract';
 import { getDeployClient } from '../internal/client';
-import { Network, fromChainId } from '@openzeppelin/defender-sdk-base-client';
+import { getAndValidateString, getNetwork } from '../internal/utils';
 
 const USAGE = 'Usage: npx @openzeppelin/defender-deploy-client-cli deploy --contractName <CONTRACT_NAME> --contractPath <CONTRACT_PATH> --chainId <CHAIN_ID> --artifactFile <BUILD_INFO_FILE_PATH> [--constructorBytecode <CONSTRUCTOR_ARGS>] [--licenseType <LICENSE>] [--verifySourceCode <true|false>] [--relayerId <RELAYER_ID>] [--salt <SALT>] [--createFactoryAddress <CREATE_FACTORY_ADDRESS>]';
 const DETAILS = `
@@ -103,16 +103,6 @@ export function getFunctionArgs(parsedArgs: minimist.ParsedArgs, extraArgs: stri
   }
 }
 
-function getAndValidateString(parsedArgs: minimist.ParsedArgs, option: string, required = false): string | undefined {
-  const value = parsedArgs[option];
-  if (value !== undefined && value.trim().length === 0) {
-    throw new Error(`Invalid option: --${option} cannot be empty`);
-  } else if (required && value === undefined) {
-    throw new Error(`Missing required option: --${option}`);
-  }
-  return value;
-}
-
 function checkInvalidArgs(parsedArgs: minimist.ParsedArgs) {
   const invalidArgs = Object.keys(parsedArgs).filter(
     key =>
@@ -135,12 +125,4 @@ function checkInvalidArgs(parsedArgs: minimist.ParsedArgs) {
   if (invalidArgs.length > 0) {
     throw new Error(`Invalid options: ${invalidArgs.join(', ')}`);
   }
-}
-
-function getNetwork(chainId: number): Network {
-  const network = fromChainId(chainId);
-  if (network === undefined) {
-    throw new Error(`Network ${chainId} is not supported by OpenZeppelin Defender`);
-  }
-  return network;
 }
