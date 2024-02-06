@@ -38,7 +38,9 @@ export async function proposeUpgrade(args: string[]): Promise<void> {
 
     console.log(`Upgrade proposal created.`);
     console.log(`Proposal ID: ${upgradeResponse.proposalId}`);
-    console.log(`Proposal URL: ${upgradeResponse.externalUrl}`);
+    if (upgradeResponse.externalUrl !== undefined) {
+      console.log(`Proposal URL: ${upgradeResponse.externalUrl}`);
+    }
   }
 }
 
