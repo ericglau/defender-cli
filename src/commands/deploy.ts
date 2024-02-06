@@ -1,7 +1,7 @@
 import minimist from 'minimist';
-import { FunctionArgs, deployContract } from './deploy-contract';
+import { FunctionArgs, deployContract } from '../internal/deploy-contract';
+import { getDeployClient } from '../internal/client';
 import { Network, fromChainId } from '@openzeppelin/defender-sdk-base-client';
-import { getDeployClient } from './client';
 
 const USAGE = 'Usage: npx @openzeppelin/defender-deploy-client-cli deploy --contractName <CONTRACT_NAME> --contractPath <CONTRACT_PATH> --chainId <CHAIN_ID> --artifactFile <BUILD_INFO_FILE_PATH> [--constructorBytecode <CONSTRUCTOR_ARGS>] [--licenseType <LICENSE>] [--verifySourceCode <true|false>] [--relayerId <RELAYER_ID>] [--salt <SALT>] [--createFactoryAddress <CREATE_FACTORY_ADDRESS>]';
 const DETAILS = `
@@ -22,7 +22,7 @@ Additional options:
   --createFactoryAddress <CREATE_FACTORY_ADDRESS>  Address of the CREATE2 factory to use for deployment. Defaults to the factory provided by Defender.
 `;
 
-export async function main(args: string[]): Promise<void> {
+export async function deploy(args: string[]): Promise<void> {
   const { parsedArgs, extraArgs } = parseArgs(args);
 
   if (!help(parsedArgs, extraArgs)) {
@@ -74,9 +74,9 @@ function help(parsedArgs: minimist.ParsedArgs, extraArgs: string[]): boolean {
  */
 export function getFunctionArgs(parsedArgs: minimist.ParsedArgs, extraArgs: string[]): FunctionArgs {
   if (extraArgs.length === 0) {
-    throw new Error('Missing command. Supported commands are: validate');
+    throw new Error('Broken invariant: Missing command');
   } else if (extraArgs[0] !== 'deploy') {
-    throw new Error(`Invalid command: ${extraArgs[0]}. Supported commands are: deploy`);
+    throw new Error(`Broken invariant: Expected command 'deploy', got ${extraArgs[0]} instead`);
   } else if (extraArgs.length > 1) {
     throw new Error('The deploy command does not take any arguments, only options.');
   } else {

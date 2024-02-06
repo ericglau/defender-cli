@@ -49,8 +49,8 @@ function setupFakeDefender(t) {
   };
   t.context.spy = sinon.spy(fakeDefenderClient, 'deployContract');
 
-  t.context.defender = proxyquire('../dist/defender', {
-    './client': {
+  t.context.deploy = proxyquire('../dist/commands/deploy', {
+    '../internal/client': {
       getDeployClient: () => fakeDefenderClient,
     }
   });
@@ -64,7 +64,7 @@ test('deploy required args', async t => {
 
   const args = ['deploy', '--contractName', 'MyContract', '--contractPath', 'contracts/MyContract.sol', '--chainId', FAKE_CHAIN_ID, '--artifactFile', 'test/samples/build-info.json'];
 
-  await t.context.defender.main(args);
+  await t.context.deploy.deploy(args);
 
   t.is(t.context.spy.callCount, 1);
 
@@ -87,7 +87,7 @@ test('deploy all args', async t => {
 
   const args = ['deploy', '--contractName', 'MyContract', '--contractPath', 'contracts/MyContract.sol', '--chainId', FAKE_CHAIN_ID, '--artifactFile', 'test/samples/build-info.json', '--constructorBytecode', '0x1234', '--licenseType', 'MIT', '--verifySourceCode', 'false', '--relayerId', 'my-relayer-id', '--salt', '0x4567', '--createFactoryAddress', '0x0000000000000000000000000000000000098765'];
 
-  await t.context.defender.main(args);
+  await t.context.deploy.deploy(args);
 
   t.is(t.context.spy.callCount, 1);
 
