@@ -19,7 +19,20 @@ DEFENDER_SECRET<Your API secret>
 ## Usage
 
 ```
-npx @openzeppelin/defender-deploy-client-cli deploy --contractName <CONTRACT_NAME> --contractPath <CONTRACT_PATH> --chainId <CHAIN_ID> --artifactFile <BUILD_INFO_FILE_PATH> [--constructorBytecode <CONSTRUCTOR_BYTECODE>] [--licenseType <LICENSE>] [--verifySourceCode <true|false>] [--relayerId <RELAYER_ID>] [--salt <SALT>] [--createFactoryAddress <CREATE_FACTORY_ADDRESS>]
+Usage: npx @openzeppelin/defender-deploy-client-cli <COMMAND> <OPTIONS>
+
+Performs actions using OpenZeppelin Defender.
+
+Available commands:
+  deploy  Deploys a contract.
+  proposeUpgrade  Proposes an upgrade.
+
+Run 'npx @openzeppelin/defender-deploy-client-cli <COMMAND> --help' for more information on a command.
+```
+
+### Deploying a contract
+```
+npx @openzeppelin/defender-deploy-client-cli deploy --contractName <CONTRACT_NAME> --contractPath <CONTRACT_PATH> --chainId <CHAIN_ID> --artifactFile <BUILD_INFO_FILE_PATH> [--constructorBytecode <CONSTRUCTOR_ARGS>] [--licenseType <LICENSE>] [--verifySourceCode <true|false>] [--relayerId <RELAYER_ID>] [--salt <SALT>] [--createFactoryAddress <CREATE_FACTORY_ADDRESS>]
 
 Deploys a contract using OpenZeppelin Defender.
 
@@ -36,4 +49,21 @@ Additional options:
   --relayerId <RELAYER_ID>        Relayer ID to use for deployment. Defaults to the relayer configured for your deployment environment on Defender.
   --salt <SALT>                   Salt to use for CREATE2 deployment. Defaults to a random salt.
   --createFactoryAddress <CREATE_FACTORY_ADDRESS>  Address of the CREATE2 factory to use for deployment. Defaults to the factory provided by Defender.
+```
+
+### Proposing an upgrade
+```
+npx @openzeppelin/defender-deploy-client-cli proposeUpgrade --proxyAddress <PROXY_ADDRESS> --newImplementationAddress <NEW_IMPLEMENTATION_ADDRESS> --chainId <CHAIN_ID> [--proxyAdminAddress <PROXY_ADMIN_ADDRESS>] [--newImplementationABI <NEW_IMPLEMENTATION_ABI>] [--approvalProcessId <UPGRADE_APPROVAL_PROCESS_ID>]
+
+Proposes an upgrade using OpenZeppelin Defender.
+
+Required options:
+  --proxyAddress <PROXY_ADDRESS>  Address of the proxy to upgrade.
+  --newImplementationAddress <NEW_IMPLEMENTATION_ADDRESS>  Address of the new implementation contract.
+  --chainId <CHAIN_ID>            Chain ID of the network to use.
+
+Additional options:
+  --proxyAdminAddress <PROXY_ADMIN_ADDRESS>  Address of the proxy's admin. Required if the proxy is a transparent proxy.
+  --newImplementationABI <NEW_IMPLEMENTATION_ABI>  JSON formatted string representing the ABI of the new implementation contract.
+  --approvalProcessId <UPGRADE_APPROVAL_PROCESS_ID>  The ID of the upgrade approval process. Defaults to the upgrade approval process configured for your deployment environment on Defender.
 ```
