@@ -53,7 +53,7 @@ Additional options:
 
 ### Proposing an upgrade
 ```
-npx @openzeppelin/defender-deploy-client-cli proposeUpgrade --proxyAddress <PROXY_ADDRESS> --newImplementationAddress <NEW_IMPLEMENTATION_ADDRESS> --chainId <CHAIN_ID> [--proxyAdminAddress <PROXY_ADMIN_ADDRESS>] [--newImplementationABI <NEW_IMPLEMENTATION_ABI>] [--approvalProcessId <UPGRADE_APPROVAL_PROCESS_ID>]
+npx @openzeppelin/defender-deploy-client-cli proposeUpgrade --proxyAddress <PROXY_ADDRESS> --newImplementationAddress <NEW_IMPLEMENTATION_ADDRESS> --chainId <CHAIN_ID> [--proxyAdminAddress <PROXY_ADMIN_ADDRESS>] [--abiFile <CONTRACT_ARTIFACT_FILE_PATH>] [--approvalProcessId <UPGRADE_APPROVAL_PROCESS_ID>]
 
 Proposes an upgrade using OpenZeppelin Defender.
 

@@ -3,7 +3,7 @@ import { FunctionArgs, upgradeContract } from '../internal/upgrade-contract';
 import { getDeployClient } from '../internal/client';
 import { getAndValidateString, getNetwork } from '../internal/utils';
 
-const USAGE = 'Usage: npx @openzeppelin/defender-deploy-client-cli proposeUpgrade --proxyAddress <PROXY_ADDRESS> --newImplementationAddress <NEW_IMPLEMENTATION_ADDRESS> --chainId <CHAIN_ID> [--proxyAdminAddress <PROXY_ADMIN_ADDRESS>] [--newImplementationABI <NEW_IMPLEMENTATION_ABI>] [--approvalProcessId <UPGRADE_APPROVAL_PROCESS_ID>]';
+const USAGE = 'Usage: npx @openzeppelin/defender-deploy-client-cli proposeUpgrade --proxyAddress <PROXY_ADDRESS> --newImplementationAddress <NEW_IMPLEMENTATION_ADDRESS> --chainId <CHAIN_ID> [--proxyAdminAddress <PROXY_ADMIN_ADDRESS>] [--abiFile <CONTRACT_ARTIFACT_FILE_PATH>] [--approvalProcessId <UPGRADE_APPROVAL_PROCESS_ID>]';
 const DETAILS = `
 Proposes an upgrade using OpenZeppelin Defender.
 
