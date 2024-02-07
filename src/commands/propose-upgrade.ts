@@ -14,7 +14,7 @@ Required options:
 
 Additional options:
   --proxyAdminAddress <PROXY_ADMIN_ADDRESS>  Address of the proxy's admin. Required if the proxy is a transparent proxy.
-  --newImplementationABI <NEW_IMPLEMENTATION_ABI>  JSON formatted string representing the ABI of the new implementation contract.
+  --abiFile <CONTRACT_ARTIFACT_FILE_PATH>  Path to a JSON file that contains an "abi" entry, where its value will be used as the new implementation ABI.
   --approvalProcessId <UPGRADE_APPROVAL_PROCESS_ID>  The ID of the upgrade approval process. Defaults to the upgrade approval process configured for your deployment environment on Defender.
 `;
 
@@ -49,7 +49,7 @@ function parseArgs(args: string[]) {
     boolean: [
       'help',
     ],
-    string: ['proxyAddress', 'newImplementationAddress', 'chainId', 'proxyAdminAddress', 'newImplementationABI', 'approvalProcessId'],
+    string: ['proxyAddress', 'newImplementationAddress', 'chainId', 'proxyAdminAddress', 'abiFile', 'approvalProcessId'],
     alias: { h: 'help' },
   });
   const extraArgs = parsedArgs._;
@@ -88,12 +88,12 @@ export function getFunctionArgs(parsedArgs: minimist.ParsedArgs, extraArgs: stri
 
     // Additional options
     const proxyAdminAddress = getAndValidateString(parsedArgs, 'proxyAdminAddress');
-    const newImplementationABI = getAndValidateString(parsedArgs, 'newImplementationABI');
+    const abiFile = getAndValidateString(parsedArgs, 'abiFile');
     const approvalProcessId = getAndValidateString(parsedArgs, 'approvalProcessId');
 
     checkInvalidArgs(parsedArgs);
 
-    return { proxyAddress, newImplementationAddress, network, proxyAdminAddress, newImplementationABI, approvalProcessId };
+    return { proxyAddress, newImplementationAddress, network, proxyAdminAddress, abiFile, approvalProcessId };
   }
 }
 
@@ -110,7 +110,7 @@ function checkInvalidArgs(parsedArgs: minimist.ParsedArgs) {
         'newImplementationAddress',
         'chainId',
         'proxyAdminAddress',
-        'newImplementationABI',
+        'abiFile',
         'approvalProcessId',
       ].includes(key),
   );

@@ -28,8 +28,9 @@ const NEW_IMPLEMENTATION_ADDRESS = '0x456';
 const FAKE_CHAIN_ID = '1';
 
 const PROXY_ADMIN_ADDRESS = '0x789';
-const ABI = '[{"foo":"bar"}]';
 const APPROVAL_PROCESS_ID = 'my-approval-process-id';
+
+const ABI_FILE = 'test/samples/MyContract.json'
 
 function setupFakeDefender(t) {
   const fakeDefenderClient = {
@@ -73,7 +74,7 @@ test('proposeUpgrade required args', async t => {
 test('proposeUpgrade all args', async t => {
   setupFakeDefender(t);
 
-  const args = ['proposeUpgrade', '--proxyAddress', PROXY_ADDRESS, '--newImplementationAddress', NEW_IMPLEMENTATION_ADDRESS, '--chainId', FAKE_CHAIN_ID, '--proxyAdminAddress', PROXY_ADMIN_ADDRESS, '--newImplementationABI', ABI, '--approvalProcessId', APPROVAL_PROCESS_ID];
+  const args = ['proposeUpgrade', '--proxyAddress', PROXY_ADDRESS, '--newImplementationAddress', NEW_IMPLEMENTATION_ADDRESS, '--chainId', FAKE_CHAIN_ID, '--proxyAdminAddress', PROXY_ADMIN_ADDRESS, '--abiFile', ABI_FILE, '--approvalProcessId', APPROVAL_PROCESS_ID];
 
   await t.context.command.proposeUpgrade(args);
 
@@ -84,7 +85,7 @@ test('proposeUpgrade all args', async t => {
     newImplementationAddress: NEW_IMPLEMENTATION_ADDRESS,
     network: 'mainnet',
     proxyAdminAddress: PROXY_ADMIN_ADDRESS,
-    newImplementationABI: ABI,
+    newImplementationABI: '[{"type":"function","name":"hello"}]',
     approvalProcessId: APPROVAL_PROCESS_ID,
   });
 });
