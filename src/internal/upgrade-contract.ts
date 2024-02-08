@@ -1,7 +1,7 @@
 import { promises as fs } from 'fs';
 
 import { Network } from '@openzeppelin/defender-sdk-base-client';
-import { DeployClient, UpgradeContractRequest } from '@openzeppelin/defender-sdk-deploy-client';
+import { DeployClient, UpgradeContractRequest, UpgradeContractResponse } from '@openzeppelin/defender-sdk-deploy-client';
 
 export interface FunctionArgs {
   proxyAddress: string;
@@ -12,7 +12,7 @@ export interface FunctionArgs {
   approvalProcessId?: string;
 }
 
-export async function upgradeContract(args: FunctionArgs, client: DeployClient) {
+export async function upgradeContract(args: FunctionArgs, client: DeployClient): Promise<UpgradeContractResponse> {
   let newImplementationABI: string | undefined;
   if (args.abiFile !== undefined) {
     const artifactObject = JSON.parse(await fs.readFile(args.abiFile, 'utf8'));
@@ -28,5 +28,5 @@ export async function upgradeContract(args: FunctionArgs, client: DeployClient) 
     approvalProcessId: args.approvalProcessId,
   };
 
-  return await client.upgradeContract(deploymentRequest);
+  return client.upgradeContract(deploymentRequest);
 }
