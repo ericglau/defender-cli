@@ -58,7 +58,7 @@ function parseArgs(args: string[]) {
 }
 
 function help(parsedArgs: minimist.ParsedArgs, extraArgs: string[]): boolean {
-  if (extraArgs.length === 0 || parsedArgs['help']) {
+  if (parsedArgs['help']) {
     console.log(USAGE);
     console.log(DETAILS);
     return true;
@@ -73,11 +73,7 @@ function help(parsedArgs: minimist.ParsedArgs, extraArgs: string[]): boolean {
  * @throws Error if any arguments or options are invalid.
  */
 export function getFunctionArgs(parsedArgs: minimist.ParsedArgs, extraArgs: string[]): FunctionArgs {
-  if (extraArgs.length === 0) {
-    throw new Error('Broken invariant: Missing command');
-  } else if (extraArgs[0] !== 'deploy') {
-    throw new Error(`Broken invariant: Expected command 'deploy', got ${extraArgs[0]} instead`);
-  } else if (extraArgs.length > 1) {
+  if (extraArgs.length !== 0) {
     throw new Error('The deploy command does not take any arguments, only options.');
   } else {
     // Required options

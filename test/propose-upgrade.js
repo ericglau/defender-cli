@@ -55,7 +55,7 @@ function setupFakeDefender(t) {
 test('proposeUpgrade required args', async t => {
   setupFakeDefender(t);
 
-  const args = ['proposeUpgrade', '--proxyAddress', PROXY_ADDRESS, '--newImplementationAddress', NEW_IMPLEMENTATION_ADDRESS, '--chainId', FAKE_CHAIN_ID];
+  const args = ['--proxyAddress', PROXY_ADDRESS, '--newImplementationAddress', NEW_IMPLEMENTATION_ADDRESS, '--chainId', FAKE_CHAIN_ID];
 
   await t.context.command.proposeUpgrade(args);
 
@@ -74,7 +74,7 @@ test('proposeUpgrade required args', async t => {
 test('proposeUpgrade all args', async t => {
   setupFakeDefender(t);
 
-  const args = ['proposeUpgrade', '--proxyAddress', PROXY_ADDRESS, '--newImplementationAddress', NEW_IMPLEMENTATION_ADDRESS, '--chainId', FAKE_CHAIN_ID, '--proxyAdminAddress', PROXY_ADMIN_ADDRESS, '--abiFile', ABI_FILE, '--approvalProcessId', APPROVAL_PROCESS_ID];
+  const args = ['--proxyAddress', PROXY_ADDRESS, '--newImplementationAddress', NEW_IMPLEMENTATION_ADDRESS, '--chainId', FAKE_CHAIN_ID, '--proxyAdminAddress', PROXY_ADMIN_ADDRESS, '--abiFile', ABI_FILE, '--approvalProcessId', APPROVAL_PROCESS_ID];
 
   await t.context.command.proposeUpgrade(args);
 
