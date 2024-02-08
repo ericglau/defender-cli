@@ -23,17 +23,7 @@ export async function proposeUpgrade(args: string[]): Promise<void> {
 
   if (!help(parsedArgs, extraArgs)) {
     const functionArgs = getFunctionArgs(parsedArgs, extraArgs);
-
-    require('dotenv').config();
-    const apiKey = process.env.DEFENDER_KEY as string;
-    const apiSecret = process.env.DEFENDER_SECRET as string;
-
-    if (apiKey === undefined || apiSecret === undefined) {
-      throw new Error('DEFENDER_KEY and DEFENDER_SECRET must be set in environment variables.');
-    }
-
-    const client = getDeployClient(apiKey, apiSecret);
-
+    const client = getDeployClient();
     const upgradeResponse = await upgradeContract(functionArgs, client);
 
     console.log(`Upgrade proposal created.`);

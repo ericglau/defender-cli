@@ -27,18 +27,9 @@ export async function deploy(args: string[]): Promise<void> {
 
   if (!help(parsedArgs, extraArgs)) {
     const functionArgs = getFunctionArgs(parsedArgs, extraArgs);
-
-    require('dotenv').config();
-    const apiKey = process.env.DEFENDER_KEY as string;
-    const apiSecret = process.env.DEFENDER_SECRET as string;
-
-    if (apiKey === undefined || apiSecret === undefined) {
-      throw new Error('DEFENDER_KEY and DEFENDER_SECRET must be set in environment variables.');
-    }
-
-    const client = getDeployClient(apiKey, apiSecret);
-
+    const client = getDeployClient();
     const address = await deployContract(functionArgs, client);
+
     console.log(`Deployed to address: ${address}`);
   }
 }
