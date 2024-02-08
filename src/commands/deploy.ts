@@ -2,6 +2,7 @@ import minimist from 'minimist';
 import { FunctionArgs, deployContract } from '../internal/deploy-contract';
 import { getDeployClient } from '../internal/client';
 import { getAndValidateString, getNetwork } from '../internal/utils';
+import { DeployClient } from '@openzeppelin/defender-sdk-deploy-client';
 
 const USAGE = 'Usage: npx @openzeppelin/defender-deploy-client-cli deploy --contractName <CONTRACT_NAME> --contractPath <CONTRACT_PATH> --chainId <CHAIN_ID> --artifactFile <BUILD_INFO_FILE_PATH> [--constructorBytecode <CONSTRUCTOR_ARGS>] [--licenseType <LICENSE>] [--verifySourceCode <true|false>] [--relayerId <RELAYER_ID>] [--salt <SALT>] [--createFactoryAddress <CREATE_FACTORY_ADDRESS>]';
 const DETAILS = `
@@ -22,12 +23,12 @@ Additional options:
   --createFactoryAddress <CREATE_FACTORY_ADDRESS>  Address of the CREATE2 factory to use for deployment. Defaults to the factory provided by Defender.
 `;
 
-export async function deploy(args: string[]): Promise<void> {
+export async function deploy(args: string[], deployClient?: DeployClient): Promise<void> {
   const { parsedArgs, extraArgs } = parseArgs(args);
 
   if (!help(parsedArgs, extraArgs)) {
     const functionArgs = getFunctionArgs(parsedArgs, extraArgs);
-    const client = getDeployClient();
+    const client = deployClient ?? getDeployClient();
     const address = await deployContract(functionArgs, client);
 
     console.log(`Deployed to address: ${address}`);

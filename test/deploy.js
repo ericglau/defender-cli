@@ -1,8 +1,8 @@
 const test = require('ava');
 const sinon = require('sinon');
-const proxyquire = require('proxyquire').noCallThru();
 const { promisify } = require('util');
 const { exec } = require('child_process');
+const { deploy } = require('../dist/commands/deploy');
 
 const execAsync = promisify(exec);
 
@@ -23,44 +23,39 @@ const DEPLOYMENT_ID = 'abc';
 const ADDRESS = '0x2';
 const FAKE_CHAIN_ID = '1';
 
-function setupFakeDefender(t) {
-  const fakeDefenderClient = {
-    deployContract: () => {
-      return {
-        txHash: TX_HASH,
-        deploymentId: DEPLOYMENT_ID,
-        address: ADDRESS,
-        status: 'completed'
-      };
-    },
-    getDeployedContract: () => {
-      return {
-        txHash: TX_HASH,
-        deploymentId: DEPLOYMENT_ID,
-        address: ADDRESS,
-        status: 'completed'
-      };
-    }
-  };
-  t.context.spy = sinon.spy(fakeDefenderClient, 'deployContract');
-
-  t.context.command = proxyquire('../dist/commands/deploy', {
-    '../internal/client': {
-      getDeployClient: () => fakeDefenderClient,
-    }
+test.beforeEach(t => {
+  const deployContractStub = sinon.stub().returns({
+    txHash: TX_HASH,
+    deploymentId: DEPLOYMENT_ID,
+    address: ADDRESS,
+    status: 'completed'
   });
-}
+  const getDeployedContractStub = sinon.stub().returns({
+    txHash: TX_HASH,
+    deploymentId: DEPLOYMENT_ID,
+    address: ADDRESS,
+    status: 'completed'
+  });
+  t.context.deployContractStub = deployContractStub;
+
+  t.context.fakeDefenderClient = {
+    deployContract: deployContractStub,
+    getDeployedContract: getDeployedContractStub,
+  };
+});
+
+test.afterEach.always(t => {
+  sinon.restore();
+});
 
 test('deploy required args', async t => {
-  setupFakeDefender(t);
-
   const args = ['--contractName', 'MyContract', '--contractPath', 'contracts/MyContract.sol', '--chainId', FAKE_CHAIN_ID, '--artifactFile', 'test/input/build-info.json'];
 
-  await t.context.command.deploy(args);
+  await deploy(args, t.context.fakeDefenderClient);
 
-  t.is(t.context.spy.callCount, 1);
+  t.is(t.context.deployContractStub.callCount, 1);
 
-  sinon.assert.calledWithExactly(t.context.spy, {
+  sinon.assert.calledWithExactly(t.context.deployContractStub, {
     contractName: 'MyContract',
     contractPath: 'contracts/MyContract.sol',
     network: 'mainnet',
@@ -75,15 +70,13 @@ test('deploy required args', async t => {
 });
 
 test('deploy all args', async t => {
-  setupFakeDefender(t);
-
   const args = ['--contractName', 'MyContract', '--contractPath', 'contracts/MyContract.sol', '--chainId', FAKE_CHAIN_ID, '--artifactFile', 'test/input/build-info.json', '--constructorBytecode', '0x1234', '--licenseType', 'MIT', '--verifySourceCode', 'false', '--relayerId', 'my-relayer-id', '--salt', '0x4567', '--createFactoryAddress', '0x0000000000000000000000000000000000098765'];
 
-  await t.context.command.deploy(args);
+  await deploy(args, t.context.fakeDefenderClient);
 
-  t.is(t.context.spy.callCount, 1);
+  t.is(t.context.deployContractStub.callCount, 1);
 
-  sinon.assert.calledWithExactly(t.context.spy, {
+  sinon.assert.calledWithExactly(t.context.deployContractStub, {
     contractName: 'MyContract',
     contractPath: 'contracts/MyContract.sol',
     network: 'mainnet',

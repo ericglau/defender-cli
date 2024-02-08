@@ -2,6 +2,7 @@ import minimist from 'minimist';
 import { FunctionArgs, upgradeContract } from '../internal/upgrade-contract';
 import { getDeployClient } from '../internal/client';
 import { getAndValidateString, getNetwork } from '../internal/utils';
+import { DeployClient } from '@openzeppelin/defender-sdk-deploy-client';
 
 const USAGE = 'Usage: npx @openzeppelin/defender-deploy-client-cli proposeUpgrade --proxyAddress <PROXY_ADDRESS> --newImplementationAddress <NEW_IMPLEMENTATION_ADDRESS> --chainId <CHAIN_ID> [--proxyAdminAddress <PROXY_ADMIN_ADDRESS>] [--abiFile <CONTRACT_ARTIFACT_FILE_PATH>] [--approvalProcessId <UPGRADE_APPROVAL_PROCESS_ID>]';
 const DETAILS = `
@@ -18,12 +19,12 @@ Additional options:
   --approvalProcessId <UPGRADE_APPROVAL_PROCESS_ID>  The ID of the upgrade approval process. Defaults to the upgrade approval process configured for your deployment environment on Defender.
 `;
 
-export async function proposeUpgrade(args: string[]): Promise<void> {
+export async function proposeUpgrade(args: string[], deployClient?: DeployClient): Promise<void> {
   const { parsedArgs, extraArgs } = parseArgs(args);
 
   if (!help(parsedArgs, extraArgs)) {
     const functionArgs = getFunctionArgs(parsedArgs, extraArgs);
-    const client = getDeployClient();
+    const client = deployClient ?? getDeployClient();
     const upgradeResponse = await upgradeContract(functionArgs, client);
 
     console.log(`Upgrade proposal created.`);

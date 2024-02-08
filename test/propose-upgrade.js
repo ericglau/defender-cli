@@ -1,8 +1,8 @@
 const test = require('ava');
 const sinon = require('sinon');
-const proxyquire = require('proxyquire').noCallThru();
 const { promisify } = require('util');
 const { exec } = require('child_process');
+const { proposeUpgrade } = require('../dist/commands/propose-upgrade');
 
 const execAsync = promisify(exec);
 
@@ -27,33 +27,29 @@ const APPROVAL_PROCESS_ID = 'my-approval-process-id';
 
 const ABI_FILE = 'test/input/MyContract.json'
 
-function setupFakeDefender(t) {
-  const fakeDefenderClient = {
-    upgradeContract: () => {
-      return {
-        proposalId: 'my-proposal-id',
-      };
-    },
-  };
-  t.context.spy = sinon.spy(fakeDefenderClient, 'upgradeContract');
-
-  t.context.command = proxyquire('../dist/commands/propose-upgrade', {
-    '../internal/client': {
-      getDeployClient: () => fakeDefenderClient,
-    }
+test.beforeEach(t => {
+  const upgradeContractStub = sinon.stub().returns({
+    proposalId: 'my-proposal-id',
   });
-}
+  t.context.upgradeContractStub = upgradeContractStub;
+
+  t.context.fakeDefenderClient = {
+    upgradeContract: upgradeContractStub,
+  };
+});
+
+test.afterEach.always(t => {
+  sinon.restore();
+});
 
 test('proposeUpgrade required args', async t => {
-  setupFakeDefender(t);
-
   const args = ['--proxyAddress', PROXY_ADDRESS, '--newImplementationAddress', NEW_IMPLEMENTATION_ADDRESS, '--chainId', FAKE_CHAIN_ID];
 
-  await t.context.command.proposeUpgrade(args);
+  await proposeUpgrade(args, t.context.fakeDefenderClient);
 
-  t.is(t.context.spy.callCount, 1);
+  t.is(t.context.upgradeContractStub.callCount, 1);
 
-  sinon.assert.calledWithExactly(t.context.spy, {
+  sinon.assert.calledWithExactly(t.context.upgradeContractStub, {
     proxyAddress: PROXY_ADDRESS,
     newImplementationAddress: NEW_IMPLEMENTATION_ADDRESS,
     network: 'mainnet',
@@ -64,15 +60,13 @@ test('proposeUpgrade required args', async t => {
 });
 
 test('proposeUpgrade all args', async t => {
-  setupFakeDefender(t);
-
   const args = ['--proxyAddress', PROXY_ADDRESS, '--newImplementationAddress', NEW_IMPLEMENTATION_ADDRESS, '--chainId', FAKE_CHAIN_ID, '--proxyAdminAddress', PROXY_ADMIN_ADDRESS, '--abiFile', ABI_FILE, '--approvalProcessId', APPROVAL_PROCESS_ID];
 
-  await t.context.command.proposeUpgrade(args);
+  await proposeUpgrade(args, t.context.fakeDefenderClient);
 
-  t.is(t.context.spy.callCount, 1);
+  t.is(t.context.upgradeContractStub.callCount, 1);
 
-  sinon.assert.calledWithExactly(t.context.spy, {
+  sinon.assert.calledWithExactly(t.context.upgradeContractStub, {
     proxyAddress: PROXY_ADDRESS,
     newImplementationAddress: NEW_IMPLEMENTATION_ADDRESS,
     network: 'mainnet',
