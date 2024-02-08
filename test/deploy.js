@@ -8,11 +8,6 @@ const execAsync = promisify(exec);
 
 const CLI = 'node dist/cli.js';
 
-test.afterEach(async () => {
-  delete process.env.DEFENDER_KEY;
-  delete process.env.DEFENDER_SECRET;
-});
-
 test('deploy help', async t => {
   const output = (await execAsync(`${CLI} deploy --help`)).stdout;
   t.snapshot(output);
@@ -54,9 +49,6 @@ function setupFakeDefender(t) {
       getDeployClient: () => fakeDefenderClient,
     }
   });
-
-  process.env.DEFENDER_KEY = 'fake-key';
-  process.env.DEFENDER_SECRET = 'fake-secret';
 }
 
 test('deploy required args', async t => {
