@@ -54,7 +54,7 @@ function setupFakeDefender(t) {
 test('deploy required args', async t => {
   setupFakeDefender(t);
 
-  const args = ['--contractName', 'MyContract', '--contractPath', 'contracts/MyContract.sol', '--chainId', FAKE_CHAIN_ID, '--artifactFile', 'test/samples/build-info.json'];
+  const args = ['--contractName', 'MyContract', '--contractPath', 'contracts/MyContract.sol', '--chainId', FAKE_CHAIN_ID, '--artifactFile', 'test/input/build-info.json'];
 
   await t.context.command.deploy(args);
 
@@ -77,7 +77,7 @@ test('deploy required args', async t => {
 test('deploy all args', async t => {
   setupFakeDefender(t);
 
-  const args = ['--contractName', 'MyContract', '--contractPath', 'contracts/MyContract.sol', '--chainId', FAKE_CHAIN_ID, '--artifactFile', 'test/samples/build-info.json', '--constructorBytecode', '0x1234', '--licenseType', 'MIT', '--verifySourceCode', 'false', '--relayerId', 'my-relayer-id', '--salt', '0x4567', '--createFactoryAddress', '0x0000000000000000000000000000000000098765'];
+  const args = ['--contractName', 'MyContract', '--contractPath', 'contracts/MyContract.sol', '--chainId', FAKE_CHAIN_ID, '--artifactFile', 'test/input/build-info.json', '--constructorBytecode', '0x1234', '--licenseType', 'MIT', '--verifySourceCode', 'false', '--relayerId', 'my-relayer-id', '--salt', '0x4567', '--createFactoryAddress', '0x0000000000000000000000000000000000098765'];
 
   await t.context.command.deploy(args);
 

@@ -25,7 +25,7 @@ const FAKE_CHAIN_ID = '1';
 const PROXY_ADMIN_ADDRESS = '0x789';
 const APPROVAL_PROCESS_ID = 'my-approval-process-id';
 
-const ABI_FILE = 'test/samples/MyContract.json'
+const ABI_FILE = 'test/input/MyContract.json'
 
 function setupFakeDefender(t) {
   const fakeDefenderClient = {
