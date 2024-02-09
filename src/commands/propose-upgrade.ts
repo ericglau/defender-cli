@@ -1,10 +1,10 @@
 import minimist from 'minimist';
 import { FunctionArgs, upgradeContract } from '../internal/upgrade-contract';
 import { getDeployClient } from '../internal/client';
-import { getAndValidateString, getNetwork } from '../internal/utils';
+import { USAGE_COMMAND_PREFIX, getAndValidateString, getNetwork } from '../internal/utils';
 import { DeployClient } from '@openzeppelin/defender-sdk-deploy-client';
 
-const USAGE = 'Usage: npx @openzeppelin/defender-deploy-client-cli proposeUpgrade --proxyAddress <PROXY_ADDRESS> --newImplementationAddress <NEW_IMPLEMENTATION_ADDRESS> --chainId <CHAIN_ID> [--proxyAdminAddress <PROXY_ADMIN_ADDRESS>] [--abiFile <CONTRACT_ARTIFACT_FILE_PATH>] [--approvalProcessId <UPGRADE_APPROVAL_PROCESS_ID>]';
+const USAGE = `${USAGE_COMMAND_PREFIX} proposeUpgrade --proxyAddress <PROXY_ADDRESS> --newImplementationAddress <NEW_IMPLEMENTATION_ADDRESS> --chainId <CHAIN_ID> [--proxyAdminAddress <PROXY_ADMIN_ADDRESS>] [--abiFile <CONTRACT_ARTIFACT_FILE_PATH>] [--approvalProcessId <UPGRADE_APPROVAL_PROCESS_ID>]`;
 const DETAILS = `
 Proposes an upgrade using OpenZeppelin Defender.
 
@@ -62,7 +62,7 @@ function help(parsedArgs: minimist.ParsedArgs, extraArgs: string[]): boolean {
  * @returns Function arguments
  * @throws Error if any arguments or options are invalid.
  */
-export function getFunctionArgs(parsedArgs: minimist.ParsedArgs, extraArgs: string[]): FunctionArgs {
+function getFunctionArgs(parsedArgs: minimist.ParsedArgs, extraArgs: string[]): FunctionArgs {
   if (extraArgs.length !== 0) {
     throw new Error('The proposeUpgrade command does not take any arguments, only options.');
   } else {
@@ -83,8 +83,6 @@ export function getFunctionArgs(parsedArgs: minimist.ParsedArgs, extraArgs: stri
     return { proxyAddress, newImplementationAddress, network, proxyAdminAddress, abiFile, approvalProcessId };
   }
 }
-
-
 
 function checkInvalidArgs(parsedArgs: minimist.ParsedArgs) {
   const invalidArgs = Object.keys(parsedArgs).filter(

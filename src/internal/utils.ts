@@ -18,3 +18,5 @@ export function getNetwork(chainId: number): Network {
   }
   return network;
 }
+
+export const USAGE_COMMAND_PREFIX = 'Usage: npx @openzeppelin/defender-deploy-client-cli';
