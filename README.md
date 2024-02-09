@@ -19,13 +19,15 @@ DEFENDER_SECRET<Your API secret>
 ## Usage
 
 ```
-Usage: npx @openzeppelin/defender-deploy-client-cli <COMMAND> <OPTIONS>
+npx @openzeppelin/defender-deploy-client-cli <COMMAND> <OPTIONS>
 
 Performs actions using OpenZeppelin Defender.
 
 Available commands:
   deploy  Deploys a contract.
   proposeUpgrade  Proposes an upgrade.
+  getDeployApprovalProcess  Gets the deploy approval process configured for a network.
+  getUpgradeApprovalProcess  Gets the upgrade approval process configured for a network.
 
 Run 'npx @openzeppelin/defender-deploy-client-cli <COMMAND> --help' for more information on a command.
 ```
