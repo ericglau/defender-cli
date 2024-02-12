@@ -3,6 +3,7 @@
 ## Unreleased
 
 - Add commands to get approval process information. ([#4](https://github.com/OpenZeppelin/defender-deploy-client-cli/pull/4))
+- Renamed options, see breaking changes below.
 
 ### Breaking changes:
 - `deploy` command: Renamed the `--artifactFile` option to `--buildInfoFile`
