@@ -7,7 +7,7 @@ export interface FunctionArgs {
   contractName: string;
   contractPath: string;
   network: Network;
-  artifactFile: string;
+  buildInfoFile: string;
   licenseType?: string;
   constructorBytecode?: string;
   verifySourceCode: boolean;
@@ -17,7 +17,7 @@ export interface FunctionArgs {
 }
 
 export async function deployContract(args: FunctionArgs, client: DeployClient) {
-  const buildInfoFileContents = await fs.readFile(args.artifactFile, 'utf8');
+  const buildInfoFileContents = await fs.readFile(args.buildInfoFile, 'utf8');
 
   const deploymentRequest: DeployContractRequest = {
     contractName: args.contractName,

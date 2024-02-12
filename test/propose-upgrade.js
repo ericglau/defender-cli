@@ -60,7 +60,7 @@ test('proposeUpgrade required args', async t => {
 });
 
 test('proposeUpgrade all args', async t => {
-  const args = ['--proxyAddress', PROXY_ADDRESS, '--newImplementationAddress', NEW_IMPLEMENTATION_ADDRESS, '--chainId', FAKE_CHAIN_ID, '--proxyAdminAddress', PROXY_ADMIN_ADDRESS, '--abiFile', ABI_FILE, '--approvalProcessId', APPROVAL_PROCESS_ID];
+  const args = ['--proxyAddress', PROXY_ADDRESS, '--newImplementationAddress', NEW_IMPLEMENTATION_ADDRESS, '--chainId', FAKE_CHAIN_ID, '--proxyAdminAddress', PROXY_ADMIN_ADDRESS, '--contractArtifactFile', ABI_FILE, '--approvalProcessId', APPROVAL_PROCESS_ID];
 
   await proposeUpgrade(args, t.context.fakeDefenderClient);
 

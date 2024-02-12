@@ -4,7 +4,7 @@ import { getDeployClient } from '../internal/client';
 import { USAGE_COMMAND_PREFIX, getAndValidateString, getNetwork } from '../internal/utils';
 import { DeployClient } from '@openzeppelin/defender-sdk-deploy-client';
 
-const USAGE = `${USAGE_COMMAND_PREFIX} proposeUpgrade --proxyAddress <PROXY_ADDRESS> --newImplementationAddress <NEW_IMPLEMENTATION_ADDRESS> --chainId <CHAIN_ID> [--proxyAdminAddress <PROXY_ADMIN_ADDRESS>] [--abiFile <CONTRACT_ARTIFACT_FILE_PATH>] [--approvalProcessId <UPGRADE_APPROVAL_PROCESS_ID>]`;
+const USAGE = `${USAGE_COMMAND_PREFIX} proposeUpgrade --proxyAddress <PROXY_ADDRESS> --newImplementationAddress <NEW_IMPLEMENTATION_ADDRESS> --chainId <CHAIN_ID> [--proxyAdminAddress <PROXY_ADMIN_ADDRESS>] [--contractArtifactFile <CONTRACT_ARTIFACT_FILE_PATH>] [--approvalProcessId <UPGRADE_APPROVAL_PROCESS_ID>]`;
 const DETAILS = `
 Proposes an upgrade using OpenZeppelin Defender.
 
@@ -15,7 +15,7 @@ Required options:
 
 Additional options:
   --proxyAdminAddress <PROXY_ADMIN_ADDRESS>  Address of the proxy's admin. Required if the proxy is a transparent proxy.
-  --abiFile <CONTRACT_ARTIFACT_FILE_PATH>  Path to a JSON file that contains an "abi" entry, where its value will be used as the new implementation ABI.
+  --contractArtifactFile <CONTRACT_ARTIFACT_FILE_PATH>  Path to a JSON file that contains an "abi" entry, where its value will be used as the new implementation ABI.
   --approvalProcessId <UPGRADE_APPROVAL_PROCESS_ID>  The ID of the upgrade approval process. Defaults to the upgrade approval process configured for your deployment environment on Defender.
 `;
 
@@ -40,7 +40,7 @@ function parseArgs(args: string[]) {
     boolean: [
       'help',
     ],
-    string: ['proxyAddress', 'newImplementationAddress', 'chainId', 'proxyAdminAddress', 'abiFile', 'approvalProcessId'],
+    string: ['proxyAddress', 'newImplementationAddress', 'chainId', 'proxyAdminAddress', 'contractArtifactFile', 'approvalProcessId'],
     alias: { h: 'help' },
   });
   const extraArgs = parsedArgs._;
@@ -75,12 +75,12 @@ function getFunctionArgs(parsedArgs: minimist.ParsedArgs, extraArgs: string[]): 
 
     // Additional options
     const proxyAdminAddress = getAndValidateString(parsedArgs, 'proxyAdminAddress');
-    const abiFile = getAndValidateString(parsedArgs, 'abiFile');
+    const contractArtifactFile = getAndValidateString(parsedArgs, 'contractArtifactFile');
     const approvalProcessId = getAndValidateString(parsedArgs, 'approvalProcessId');
 
     checkInvalidArgs(parsedArgs);
 
-    return { proxyAddress, newImplementationAddress, network, proxyAdminAddress, abiFile, approvalProcessId };
+    return { proxyAddress, newImplementationAddress, network, proxyAdminAddress, contractArtifactFile, approvalProcessId };
   }
 }
 
@@ -95,7 +95,7 @@ function checkInvalidArgs(parsedArgs: minimist.ParsedArgs) {
         'newImplementationAddress',
         'chainId',
         'proxyAdminAddress',
-        'abiFile',
+        'contractArtifactFile',
         'approvalProcessId',
       ].includes(key),
   );
