@@ -26,7 +26,7 @@ export type Command = 'getDeployApprovalProcess' | 'getUpgradeApprovalProcess';
 export async function getApprovalProcess(command: Command, args: string[], deployClient?: DeployClient): Promise<void> {
   const { parsedArgs, extraArgs } = parseArgs(args);
 
-  if (!help(command, parsedArgs, extraArgs)) {
+  if (!help(command, parsedArgs)) {
     const network = getFunctionArgs(command, parsedArgs, extraArgs);
     const client = deployClient ?? getDeployClient();
 
@@ -64,8 +64,10 @@ function parseArgs(args: string[]) {
   return { parsedArgs, extraArgs };
 }
 
-function help(command: Command, parsedArgs: minimist.ParsedArgs, extraArgs: string[]): boolean {
-  if (parsedArgs['help']) {
+function help(command: Command, parsedArgs: minimist.ParsedArgs): boolean {
+  if (!parsedArgs['help']) {
+    return false;
+  } else {
     switch (command) {
       case 'getDeployApprovalProcess':
         console.log(USAGE_DEPLOY);
@@ -79,8 +81,6 @@ function help(command: Command, parsedArgs: minimist.ParsedArgs, extraArgs: stri
         throw new Error(`Unknown command: ${command}`);
     }
     return true;
-  } else {
-    return false;
   }
 }
 

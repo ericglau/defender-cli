@@ -22,7 +22,7 @@ Additional options:
 export async function proposeUpgrade(args: string[], deployClient?: DeployClient): Promise<void> {
   const { parsedArgs, extraArgs } = parseArgs(args);
 
-  if (!help(parsedArgs, extraArgs)) {
+  if (!help(parsedArgs)) {
     const functionArgs = getFunctionArgs(parsedArgs, extraArgs);
     const client = deployClient ?? getDeployClient();
     const upgradeResponse = await upgradeContract(functionArgs, client);
@@ -47,13 +47,13 @@ function parseArgs(args: string[]) {
   return { parsedArgs, extraArgs };
 }
 
-function help(parsedArgs: minimist.ParsedArgs, extraArgs: string[]): boolean {
-  if (parsedArgs['help']) {
+function help(parsedArgs: minimist.ParsedArgs): boolean {
+  if (!parsedArgs['help']) {
+    return false;
+  } else {
     console.log(USAGE);
     console.log(DETAILS);
     return true;
-  } else {
-    return false;
   }
 }
 
