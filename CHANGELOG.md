@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.0.1-alpha.4 (2024-02-14)
 
 - Add commands to get approval process information. ([#4](https://github.com/OpenZeppelin/defender-deploy-client-cli/pull/4))
 - Renamed options, see breaking changes below.
