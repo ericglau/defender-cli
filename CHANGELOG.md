@@ -2,7 +2,7 @@
 
 ## 0.0.1 (2024-03-07)
 
-- Support private networks and forked networks.
+- Support private networks and forked networks. ([#7](https://github.com/OpenZeppelin/defender-deploy-client-cli/pull/7))
 
 ## 0.0.1-alpha.4 (2024-02-14)
 
