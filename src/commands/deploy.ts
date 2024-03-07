@@ -27,7 +27,7 @@ export async function deploy(args: string[], deployClient?: DeployClient): Promi
   const { parsedArgs, extraArgs } = parseArgs(args);
 
   if (!help(parsedArgs)) {
-    const functionArgs = getFunctionArgs(parsedArgs, extraArgs);
+    const functionArgs = await getFunctionArgs(parsedArgs, extraArgs);
     const client = deployClient ?? getDeployClient();
     const address = await deployContract(functionArgs, client);
 
@@ -64,7 +64,7 @@ function help(parsedArgs: minimist.ParsedArgs): boolean {
  * @returns Function arguments
  * @throws Error if any arguments or options are invalid.
  */
-function getFunctionArgs(parsedArgs: minimist.ParsedArgs, extraArgs: string[]): FunctionArgs {
+async function getFunctionArgs(parsedArgs: minimist.ParsedArgs, extraArgs: string[]): Promise<FunctionArgs> {
   if (extraArgs.length !== 0) {
     throw new Error('The deploy command does not take any arguments, only options.');
   } else {
@@ -73,7 +73,7 @@ function getFunctionArgs(parsedArgs: minimist.ParsedArgs, extraArgs: string[]): 
     const contractPath = getAndValidateString(parsedArgs, 'contractPath', true)!;
 
     const networkString = getAndValidateString(parsedArgs, 'chainId', true)!;
-    const network = getNetwork(parseInt(networkString));
+    const network = await getNetwork(parseInt(networkString));
 
     const buildInfoFile = getAndValidateString(parsedArgs, 'buildInfoFile', true)!;
 

@@ -23,7 +23,7 @@ export async function proposeUpgrade(args: string[], deployClient?: DeployClient
   const { parsedArgs, extraArgs } = parseArgs(args);
 
   if (!help(parsedArgs)) {
-    const functionArgs = getFunctionArgs(parsedArgs, extraArgs);
+    const functionArgs = await getFunctionArgs(parsedArgs, extraArgs);
     const client = deployClient ?? getDeployClient();
     const upgradeResponse = await upgradeContract(functionArgs, client);
 
@@ -62,7 +62,7 @@ function help(parsedArgs: minimist.ParsedArgs): boolean {
  * @returns Function arguments
  * @throws Error if any arguments or options are invalid.
  */
-function getFunctionArgs(parsedArgs: minimist.ParsedArgs, extraArgs: string[]): FunctionArgs {
+async function getFunctionArgs(parsedArgs: minimist.ParsedArgs, extraArgs: string[]): Promise<FunctionArgs> {
   if (extraArgs.length !== 0) {
     throw new Error('The proposeUpgrade command does not take any arguments, only options.');
   } else {
@@ -71,7 +71,7 @@ function getFunctionArgs(parsedArgs: minimist.ParsedArgs, extraArgs: string[]): 
     const newImplementationAddress = getAndValidateString(parsedArgs, 'newImplementationAddress', true)!;
 
     const networkString = getAndValidateString(parsedArgs, 'chainId', true)!;
-    const network = getNetwork(parseInt(networkString));
+    const network = await getNetwork(parseInt(networkString));
 
     // Additional options
     const proxyAdminAddress = getAndValidateString(parsedArgs, 'proxyAdminAddress');
