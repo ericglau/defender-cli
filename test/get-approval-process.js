@@ -43,7 +43,7 @@ test.beforeEach(t => {
     viaType: 'Multisig',
   });
 
-  t.context.fakeDefenderClient = {
+  t.context.fakeDeployClient = {
     getDeployApprovalProcess: t.context.getDeployApprovalProcessStub,
     getUpgradeApprovalProcess: t.context.getUpgradeApprovalProcessStub,
   };
@@ -65,7 +65,7 @@ test.afterEach.always(t => {
 test('getDeployApprovalProcess args', async t => {
   const args = ['--chainId', FAKE_CHAIN_ID];
 
-  await getApprovalProcess('getDeployApprovalProcess', args, t.context.fakeDefenderClient, t.context.fakeNetworkClient);
+  await getApprovalProcess('getDeployApprovalProcess', args, t.context.fakeDeployClient, t.context.fakeNetworkClient);
 
   t.is(t.context.getDeployApprovalProcessStub.callCount, 1);
   t.is(t.context.getUpgradeApprovalProcessStub.callCount, 0);
@@ -76,7 +76,7 @@ test('getDeployApprovalProcess args', async t => {
 test('getUpgradeApprovalProcess args', async t => {
   const args = ['--chainId', FAKE_CHAIN_ID];
 
-  await getApprovalProcess('getUpgradeApprovalProcess', args, t.context.fakeDefenderClient, t.context.fakeNetworkClient);
+  await getApprovalProcess('getUpgradeApprovalProcess', args, t.context.fakeDeployClient, t.context.fakeNetworkClient);
 
   t.is(t.context.getDeployApprovalProcessStub.callCount, 0);
   t.is(t.context.getUpgradeApprovalProcessStub.callCount, 1);

@@ -33,7 +33,7 @@ test.beforeEach(t => {
   });
   t.context.upgradeContractStub = upgradeContractStub;
 
-  t.context.fakeDefenderClient = {
+  t.context.fakeDeployClient = {
     upgradeContract: upgradeContractStub,
   };
 
@@ -54,7 +54,7 @@ test.afterEach.always(t => {
 test('proposeUpgrade required args', async t => {
   const args = ['--proxyAddress', PROXY_ADDRESS, '--newImplementationAddress', NEW_IMPLEMENTATION_ADDRESS, '--chainId', FAKE_CHAIN_ID];
 
-  await proposeUpgrade(args, t.context.fakeDefenderClient, t.context.fakeNetworkClient);
+  await proposeUpgrade(args, t.context.fakeDeployClient, t.context.fakeNetworkClient);
 
   t.is(t.context.upgradeContractStub.callCount, 1);
 
@@ -71,7 +71,7 @@ test('proposeUpgrade required args', async t => {
 test('proposeUpgrade all args', async t => {
   const args = ['--proxyAddress', PROXY_ADDRESS, '--newImplementationAddress', NEW_IMPLEMENTATION_ADDRESS, '--chainId', FAKE_CHAIN_ID, '--proxyAdminAddress', PROXY_ADMIN_ADDRESS, '--contractArtifactFile', ABI_FILE, '--approvalProcessId', APPROVAL_PROCESS_ID];
 
-  await proposeUpgrade(args, t.context.fakeDefenderClient, t.context.fakeNetworkClient);
+  await proposeUpgrade(args, t.context.fakeDeployClient, t.context.fakeNetworkClient);
 
   t.is(t.context.upgradeContractStub.callCount, 1);
 

@@ -38,7 +38,7 @@ test.beforeEach(t => {
   });
   t.context.deployContractStub = deployContractStub;
 
-  t.context.fakeDefenderClient = {
+  t.context.fakeDeployClient = {
     deployContract: deployContractStub,
     getDeployedContract: getDeployedContractStub,
   };
@@ -60,7 +60,7 @@ test.afterEach.always(t => {
 test('deploy required args', async t => {
   const args = ['--contractName', 'MyContract', '--contractPath', 'contracts/MyContract.sol', '--chainId', FAKE_CHAIN_ID, '--buildInfoFile', 'test/input/build-info.json'];
 
-  await deploy(args, t.context.fakeDefenderClient, t.context.fakeNetworkClient);
+  await deploy(args, t.context.fakeDeployClient, t.context.fakeNetworkClient);
 
   t.is(t.context.deployContractStub.callCount, 1);
 
@@ -81,7 +81,7 @@ test('deploy required args', async t => {
 test('deploy all args', async t => {
   const args = ['--contractName', 'MyContract', '--contractPath', 'contracts/MyContract.sol', '--chainId', FAKE_CHAIN_ID, '--buildInfoFile', 'test/input/build-info.json', '--constructorBytecode', '0x1234', '--licenseType', 'MIT', '--verifySourceCode', 'false', '--relayerId', 'my-relayer-id', '--salt', '0x4567', '--createFactoryAddress', '0x0000000000000000000000000000000000098765'];
 
-  await deploy(args, t.context.fakeDefenderClient, t.context.fakeNetworkClient);
+  await deploy(args, t.context.fakeDeployClient, t.context.fakeNetworkClient);
 
   t.is(t.context.deployContractStub.callCount, 1);
 
