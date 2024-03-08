@@ -3,6 +3,7 @@ import { getDeployClient } from '../internal/client';
 import { USAGE_COMMAND_PREFIX, getAndValidateString, getNetwork } from '../internal/utils';
 import { ApprovalProcessResponse, DeployClient } from '@openzeppelin/defender-sdk-deploy-client';
 import { Network } from '@openzeppelin/defender-sdk-base-client';
+import { NetworkClient } from '@openzeppelin/defender-sdk-network-client';
 
 const USAGE_DEPLOY = `${USAGE_COMMAND_PREFIX} getDeployApprovalProcess --chainId <CHAIN_ID>`;
 const DETAILS_DEPLOY = `
@@ -23,11 +24,11 @@ Required options:
 
 export type Command = 'getDeployApprovalProcess' | 'getUpgradeApprovalProcess';
 
-export async function getApprovalProcess(command: Command, args: string[], deployClient?: DeployClient): Promise<void> {
+export async function getApprovalProcess(command: Command, args: string[], deployClient?: DeployClient, networkClient?: NetworkClient): Promise<void> {
   const { parsedArgs, extraArgs } = parseArgs(args);
 
   if (!help(command, parsedArgs)) {
-    const network = await getFunctionArgs(command, parsedArgs, extraArgs);
+    const network = await getFunctionArgs(command, parsedArgs, extraArgs, networkClient);
     const client = deployClient ?? getDeployClient();
 
     let response: ApprovalProcessResponse;
@@ -89,12 +90,12 @@ function help(command: Command, parsedArgs: minimist.ParsedArgs): boolean {
  * @returns Function arguments
  * @throws Error if any arguments or options are invalid.
  */
-export async function getFunctionArgs(command: Command, parsedArgs: minimist.ParsedArgs, extraArgs: string[]): Promise<string> {
+export async function getFunctionArgs(command: Command, parsedArgs: minimist.ParsedArgs, extraArgs: string[], networkClient?: NetworkClient): Promise<string> {
   if (extraArgs.length !== 0) {
     throw new Error(`The ${command} command does not take any arguments, only options.`);
   } else {
     const networkString = getAndValidateString(parsedArgs, 'chainId', true)!;
-    const network = await getNetwork(parseInt(networkString));
+    const network = await getNetwork(parseInt(networkString), networkClient);
 
     checkInvalidArgs(parsedArgs);
 

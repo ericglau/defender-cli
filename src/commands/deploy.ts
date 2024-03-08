@@ -3,6 +3,7 @@ import { FunctionArgs, deployContract } from '../internal/deploy-contract';
 import { getDeployClient } from '../internal/client';
 import { USAGE_COMMAND_PREFIX, getAndValidateString, getNetwork } from '../internal/utils';
 import { DeployClient } from '@openzeppelin/defender-sdk-deploy-client';
+import { NetworkClient } from '@openzeppelin/defender-sdk-network-client';
 
 const USAGE = `${USAGE_COMMAND_PREFIX} deploy --contractName <CONTRACT_NAME> --contractPath <CONTRACT_PATH> --chainId <CHAIN_ID> --buildInfoFile <BUILD_INFO_FILE_PATH> [--constructorBytecode <CONSTRUCTOR_ARGS>] [--licenseType <LICENSE>] [--verifySourceCode <true|false>] [--relayerId <RELAYER_ID>] [--salt <SALT>] [--createFactoryAddress <CREATE_FACTORY_ADDRESS>]`;
 const DETAILS = `
@@ -23,11 +24,11 @@ Additional options:
   --createFactoryAddress <CREATE_FACTORY_ADDRESS>  Address of the CREATE2 factory to use for deployment. Defaults to the factory provided by Defender.
 `;
 
-export async function deploy(args: string[], deployClient?: DeployClient): Promise<void> {
+export async function deploy(args: string[], deployClient?: DeployClient, networkClient?: NetworkClient): Promise<void> {
   const { parsedArgs, extraArgs } = parseArgs(args);
 
   if (!help(parsedArgs)) {
-    const functionArgs = await getFunctionArgs(parsedArgs, extraArgs);
+    const functionArgs = await getFunctionArgs(parsedArgs, extraArgs, networkClient);
     const client = deployClient ?? getDeployClient();
     const address = await deployContract(functionArgs, client);
 
@@ -64,7 +65,7 @@ function help(parsedArgs: minimist.ParsedArgs): boolean {
  * @returns Function arguments
  * @throws Error if any arguments or options are invalid.
  */
-async function getFunctionArgs(parsedArgs: minimist.ParsedArgs, extraArgs: string[]): Promise<FunctionArgs> {
+async function getFunctionArgs(parsedArgs: minimist.ParsedArgs, extraArgs: string[], networkClient?: NetworkClient): Promise<FunctionArgs> {
   if (extraArgs.length !== 0) {
     throw new Error('The deploy command does not take any arguments, only options.');
   } else {
@@ -73,7 +74,7 @@ async function getFunctionArgs(parsedArgs: minimist.ParsedArgs, extraArgs: strin
     const contractPath = getAndValidateString(parsedArgs, 'contractPath', true)!;
 
     const networkString = getAndValidateString(parsedArgs, 'chainId', true)!;
-    const network = await getNetwork(parseInt(networkString));
+    const network = await getNetwork(parseInt(networkString), networkClient);
 
     const buildInfoFile = getAndValidateString(parsedArgs, 'buildInfoFile', true)!;
 

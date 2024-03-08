@@ -3,6 +3,7 @@ import { FunctionArgs, upgradeContract } from '../internal/upgrade-contract';
 import { getDeployClient } from '../internal/client';
 import { USAGE_COMMAND_PREFIX, getAndValidateString, getNetwork } from '../internal/utils';
 import { DeployClient } from '@openzeppelin/defender-sdk-deploy-client';
+import { NetworkClient } from '@openzeppelin/defender-sdk-network-client';
 
 const USAGE = `${USAGE_COMMAND_PREFIX} proposeUpgrade --proxyAddress <PROXY_ADDRESS> --newImplementationAddress <NEW_IMPLEMENTATION_ADDRESS> --chainId <CHAIN_ID> [--proxyAdminAddress <PROXY_ADMIN_ADDRESS>] [--contractArtifactFile <CONTRACT_ARTIFACT_FILE_PATH>] [--approvalProcessId <UPGRADE_APPROVAL_PROCESS_ID>]`;
 const DETAILS = `
@@ -19,11 +20,11 @@ Additional options:
   --approvalProcessId <UPGRADE_APPROVAL_PROCESS_ID>  The ID of the upgrade approval process. Defaults to the upgrade approval process configured for your deployment environment on Defender.
 `;
 
-export async function proposeUpgrade(args: string[], deployClient?: DeployClient): Promise<void> {
+export async function proposeUpgrade(args: string[], deployClient?: DeployClient, networkClient?: NetworkClient): Promise<void> {
   const { parsedArgs, extraArgs } = parseArgs(args);
 
   if (!help(parsedArgs)) {
-    const functionArgs = await getFunctionArgs(parsedArgs, extraArgs);
+    const functionArgs = await getFunctionArgs(parsedArgs, extraArgs, networkClient);
     const client = deployClient ?? getDeployClient();
     const upgradeResponse = await upgradeContract(functionArgs, client);
 
@@ -62,7 +63,7 @@ function help(parsedArgs: minimist.ParsedArgs): boolean {
  * @returns Function arguments
  * @throws Error if any arguments or options are invalid.
  */
-async function getFunctionArgs(parsedArgs: minimist.ParsedArgs, extraArgs: string[]): Promise<FunctionArgs> {
+async function getFunctionArgs(parsedArgs: minimist.ParsedArgs, extraArgs: string[], networkClient?: NetworkClient): Promise<FunctionArgs> {
   if (extraArgs.length !== 0) {
     throw new Error('The proposeUpgrade command does not take any arguments, only options.');
   } else {
@@ -71,7 +72,7 @@ async function getFunctionArgs(parsedArgs: minimist.ParsedArgs, extraArgs: strin
     const newImplementationAddress = getAndValidateString(parsedArgs, 'newImplementationAddress', true)!;
 
     const networkString = getAndValidateString(parsedArgs, 'chainId', true)!;
-    const network = await getNetwork(parseInt(networkString));
+    const network = await getNetwork(parseInt(networkString), networkClient);
 
     // Additional options
     const proxyAdminAddress = getAndValidateString(parsedArgs, 'proxyAdminAddress');
