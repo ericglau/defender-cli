@@ -38,7 +38,7 @@ export async function deployContract(args: FunctionArgs, client: DeployClient) {
   } catch (e: any) {
     if (e.response?.data?.message?.includes('licenseType should be equal to one of the allowed values')) {
       throw new Error(
-        `License type ${args.licenseType} is not a valid SPDX license identifier for block explorer verification. Specify a valid license type.`,
+        `License type ${args.licenseType} is not a valid value for block explorer verification. See https://etherscan.io/contract-license-types for supported values and use the string found in brackets, e.g. MIT`,
       );
     } else {
       throw e;

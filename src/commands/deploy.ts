@@ -17,7 +17,7 @@ Required options:
 
 Additional options:
   --constructorBytecode <CONSTRUCTOR_BYTECODE>  0x-prefixed ABI encoded byte string representing the constructor arguments. Required if the constructor has arguments.
-  --licenseType <LICENSE>         License type for the contract. Recommended if verifying source code. Defaults to "None".
+  --licenseType <LICENSE>         License type to display on block explorers for verified source code. See https://etherscan.io/contract-license-types for supported values and use the string found in brackets, e.g. MIT
   --verifySourceCode <true|false>  Whether to verify source code on block explorers. Defaults to true.
   --relayerId <RELAYER_ID>        Relayer ID to use for deployment. Defaults to the relayer configured for your deployment environment on Defender.
   --salt <SALT>                   Salt to use for CREATE2 deployment. Defaults to a random salt.
