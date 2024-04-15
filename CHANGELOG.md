@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-- Update `--licenseType` documentation and error message.
+- Update documentation and error message about supported values for `--licenseType` option.
 
 ## 0.0.1-alpha.5 (2024-03-11)
 
