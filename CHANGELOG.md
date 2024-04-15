@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-- Update documentation and error message about supported values for `--licenseType` option.
+- Update documentation and error message about supported values for `--licenseType` option. ([#9](https://github.com/OpenZeppelin/defender-deploy-client-cli/pull/9))
 
 ## 0.0.1-alpha.5 (2024-03-11)
 
