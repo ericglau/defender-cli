@@ -75,11 +75,32 @@ test('deploy required args', async t => {
     relayerId: undefined,
     salt: undefined,
     createFactoryAddress: undefined,
+    txOverrides: {
+      gasLimit: undefined,
+      gasPrice: undefined,
+      maxFeePerGas: undefined,
+      maxPriorityFeePerGas: undefined
+    },
   });
 });
 
 test('deploy all args', async t => {
-  const args = ['--contractName', 'MyContract', '--contractPath', 'contracts/MyContract.sol', '--chainId', FAKE_CHAIN_ID, '--buildInfoFile', 'test/input/build-info.json', '--constructorBytecode', '0x1234', '--licenseType', 'MIT', '--verifySourceCode', 'false', '--relayerId', 'my-relayer-id', '--salt', '0x4567', '--createFactoryAddress', '0x0000000000000000000000000000000000098765'];
+  const args = [
+      '--contractName', 'MyContract',
+      '--contractPath', 'contracts/MyContract.sol',
+      '--chainId', FAKE_CHAIN_ID,
+      '--buildInfoFile', 'test/input/build-info.json',
+      '--constructorBytecode', '0x1234',
+      '--licenseType', 'MIT',
+      '--verifySourceCode', 'false',
+      '--relayerId', 'my-relayer-id',
+      '--salt', '0x4567',
+      '--createFactoryAddress', '0x0000000000000000000000000000000000098765',
+      '--gasLimit', '1000000',
+      '--gasPrice', '1000000000', // 1 gwei
+      '--maxFeePerGas', '2000000000', // 2 gwei
+      '--maxPriorityFeePerGas', '500000000', // 0.5 gwei
+    ];
 
   await deploy(args, t.context.fakeDeployClient, t.context.fakeNetworkClient);
 
@@ -96,5 +117,11 @@ test('deploy all args', async t => {
     relayerId: 'my-relayer-id',
     salt: '0x4567',
     createFactoryAddress: '0x0000000000000000000000000000000000098765',
+    txOverrides: {
+      gasLimit: 1000000,
+      gasPrice: '0x3b9aca00',
+      maxFeePerGas: '0x77359400',
+      maxPriorityFeePerGas: '0x1dcd6500',
+    }
   });
 });

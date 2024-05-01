@@ -2,7 +2,7 @@ import minimist from 'minimist';
 import { FunctionArgs, deployContract } from '../internal/deploy-contract';
 import { getDeployClient } from '../internal/client';
 import { USAGE_COMMAND_PREFIX, getAndValidateString, getNetwork } from '../internal/utils';
-import { DeployClient } from '@openzeppelin/defender-sdk-deploy-client';
+import { DeployClient, TxOverrides } from '@openzeppelin/defender-sdk-deploy-client';
 import { NetworkClient } from '@openzeppelin/defender-sdk-network-client';
 
 const USAGE = `${USAGE_COMMAND_PREFIX} deploy --contractName <CONTRACT_NAME> --contractPath <CONTRACT_PATH> --chainId <CHAIN_ID> --buildInfoFile <BUILD_INFO_FILE_PATH> [--constructorBytecode <CONSTRUCTOR_ARGS>] [--licenseType <LICENSE>] [--verifySourceCode <true|false>] [--relayerId <RELAYER_ID>] [--salt <SALT>] [--createFactoryAddress <CREATE_FACTORY_ADDRESS>]`;
@@ -22,6 +22,10 @@ Additional options:
   --relayerId <RELAYER_ID>        Relayer ID to use for deployment. Defaults to the relayer configured for your deployment environment on Defender.
   --salt <SALT>                   Salt to use for CREATE2 deployment. Defaults to a random salt.
   --createFactoryAddress <CREATE_FACTORY_ADDRESS>  Address of the CREATE2 factory to use for deployment. Defaults to the factory provided by Defender.
+  --gasLimit <GAS_LIMIT>           Maximum amount of gas to allow the deployment transaction to use.
+  --gasPrice <GAS_PRICE>           Gas price for legacy transactions, in wei.
+  --maxFeePerGas <MAX_FEE_PER_GAS>  Maximum total fee per gas, in wei.
+  --maxPriorityFeePerGas <MAX_PRIORITY_FEE_PER_GAS>  Maximum priority fee per gas, in wei.
 `;
 
 export async function deploy(args: string[], deployClient?: DeployClient, networkClient?: NetworkClient): Promise<void> {
@@ -42,7 +46,8 @@ function parseArgs(args: string[]) {
       'help',
       'verifySourceCode',
     ],
-    string: ['contractName', 'contractPath', 'chainId', 'buildInfoFile', 'licenseType', 'constructorBytecode', 'relayerId', 'salt', 'createFactoryAddress'],
+    string: ['contractName', 'contractPath', 'chainId', 'buildInfoFile', 'licenseType', 'constructorBytecode', 'relayerId', 'salt', 'createFactoryAddress', 'gasLimit', 'gasPrice', 'maxFeePerGas', 'maxPriorityFeePerGas'],
+
     alias: { h: 'help' },
     default: { verifySourceCode: true },
   });
@@ -86,9 +91,16 @@ async function getFunctionArgs(parsedArgs: minimist.ParsedArgs, extraArgs: strin
     const salt = getAndValidateString(parsedArgs, 'salt');
     const createFactoryAddress = getAndValidateString(parsedArgs, 'createFactoryAddress');
 
+    const txOverrides: TxOverrides = {
+      gasLimit: parseNumberOrUndefined(getAndValidateString(parsedArgs, 'gasLimit')),
+      gasPrice: parseHexOrUndefined(getAndValidateString(parsedArgs, 'gasPrice')),
+      maxFeePerGas: parseHexOrUndefined(getAndValidateString(parsedArgs, 'maxFeePerGas')),
+      maxPriorityFeePerGas: parseHexOrUndefined(getAndValidateString(parsedArgs, 'maxPriorityFeePerGas')),
+    };
+
     checkInvalidArgs(parsedArgs);
 
-    return { contractName, contractPath, network, buildInfoFile, licenseType, constructorBytecode, verifySourceCode, relayerId, salt, createFactoryAddress };
+    return { contractName, contractPath, network, buildInfoFile, licenseType, constructorBytecode, verifySourceCode, relayerId, salt, createFactoryAddress, txOverrides };
   }
 }
 
@@ -109,9 +121,34 @@ function checkInvalidArgs(parsedArgs: minimist.ParsedArgs) {
         'relayerId',
         'salt',
         'createFactoryAddress',
+        'gasLimit',
+        'gasPrice',
+        'maxFeePerGas',
+        'maxPriorityFeePerGas',
       ].includes(key),
   );
   if (invalidArgs.length > 0) {
     throw new Error(`Invalid options: ${invalidArgs.join(', ')}`);
+  }
+}
+
+function parseHexOrUndefined(value?: string): string | undefined {
+  if (value !== undefined) {
+    // If not a hex string, convert from decimal to hex as a string
+    if (!value.startsWith('0x')) {
+      return '0x' + Number(value).toString(16);
+    } else {
+      return value;
+    }
+   } else {
+    return undefined;
+  }
+}
+
+function parseNumberOrUndefined(value?: string): number | undefined {
+  if (value !== undefined) {
+    return Number(value);
+  } else {
+    return undefined;
   }
 }

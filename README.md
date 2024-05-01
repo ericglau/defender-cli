@@ -64,6 +64,10 @@ Additional options:
   --relayerId <RELAYER_ID>        Relayer ID to use for deployment. Defaults to the relayer configured for your deployment environment on Defender.
   --salt <SALT>                   Salt to use for CREATE2 deployment. Defaults to a random salt.
   --createFactoryAddress <CREATE_FACTORY_ADDRESS>  Address of the CREATE2 factory to use for deployment. Defaults to the factory provided by Defender.
+  --gasLimit <GAS_LIMIT>           Maximum amount of gas to allow the deployment transaction to use.
+  --gasPrice <GAS_PRICE>           Gas price for legacy transactions, in wei.
+  --maxFeePerGas <MAX_FEE_PER_GAS>  Maximum total fee per gas, in wei.
+  --maxPriorityFeePerGas <MAX_PRIORITY_FEE_PER_GAS>  Maximum priority fee per gas, in wei.
 ```
 
 ### Proposing an upgrade
