@@ -1,6 +1,6 @@
 {
   "name": "@openzeppelin/defender-deploy-client-cli",
-  "version": "0.0.1-alpha.6",
+  "version": "0.0.1-alpha.7",
   "description": "CLI for deployments using OpenZeppelin Defender SDK",
   "repository": "https://github.com/OpenZeppelin/defender-deploy-client-cli",
   "license": "MIT",

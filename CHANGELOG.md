@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.0.1-alpha.7 (2024-05-01)
 
 - Add options to enable overriding deployment transaction parameters.
 
