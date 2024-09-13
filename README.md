@@ -47,7 +47,7 @@ Run 'npx @openzeppelin/defender-deploy-client-cli <COMMAND> --help' for more inf
 
 ### Deploying a contract
 ```
-npx @openzeppelin/defender-deploy-client-cli deploy --contractName <CONTRACT_NAME> --contractPath <CONTRACT_PATH> --chainId <CHAIN_ID> --buildInfoFile <BUILD_INFO_FILE_PATH> [--constructorBytecode <CONSTRUCTOR_ARGS>] [--licenseType <LICENSE>] [--verifySourceCode <true|false>] [--relayerId <RELAYER_ID>] [--salt <SALT>] [--createFactoryAddress <CREATE_FACTORY_ADDRESS>]
+npx @openzeppelin/defender-deploy-client-cli deploy --contractName <CONTRACT_NAME> --contractPath <CONTRACT_PATH> --chainId <CHAIN_ID> --buildInfoFile <BUILD_INFO_FILE_PATH> [--constructorBytecode <CONSTRUCTOR_ARGS>] [--licenseType <LICENSE>] [--verifySourceCode <true|false>] [--relayerId <RELAYER_ID>] [--salt <SALT>] [--createFactoryAddress <CREATE_FACTORY_ADDRESS>] [--gasLimit <GAS_LIMIT>] [--gasPrice <GAS_PRICE>] [--maxFeePerGas <MAX_FEE_PER_GAS>] [--maxPriorityFeePerGas <MAX_PRIORITY_FEE_PER_GAS>] [--metadata <METADATA>]
 
 Deploys a contract using OpenZeppelin Defender.
 
@@ -68,6 +68,8 @@ Additional options:
   --gasPrice <GAS_PRICE>           Gas price for legacy transactions, in wei.
   --maxFeePerGas <MAX_FEE_PER_GAS>  Maximum total fee per gas, in wei.
   --maxPriorityFeePerGas <MAX_PRIORITY_FEE_PER_GAS>  Maximum priority fee per gas, in wei.
+  --metadata "<METADATA>"            Use this to identify, tag, or classify deployments. See https://docs.openzeppelin.com/defender/module/deploy#metadata. Must be a JSON string with escaped double quotes, for example: --metadata "{ \\"commitHash\\": \\"4ae3e0d\\", \\"tag\\": \\"v1.0.0\\", \\"anyOtherField\\": \\"anyValue\\" }"
+
 ```
 
 ### Proposing an upgrade
