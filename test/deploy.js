@@ -81,6 +81,7 @@ test('deploy required args', async t => {
       maxFeePerGas: undefined,
       maxPriorityFeePerGas: undefined
     },
+    metadata: undefined,
   });
 });
 
@@ -100,6 +101,7 @@ test('deploy all args', async t => {
       '--gasPrice', '1000000000', // 1 gwei
       '--maxFeePerGas', '2000000000', // 2 gwei
       '--maxPriorityFeePerGas', '500000000', // 0.5 gwei
+      '--metadata', '{ "commitHash": "4ae3e0d", "tag": "v1.0.0", "anyOtherField": "anyValue" }',
     ];
 
   await deploy(args, t.context.fakeDeployClient, t.context.fakeNetworkClient);
@@ -122,6 +124,11 @@ test('deploy all args', async t => {
       gasPrice: '0x3b9aca00',
       maxFeePerGas: '0x77359400',
       maxPriorityFeePerGas: '0x1dcd6500',
+    },
+    metadata: {
+      commitHash: '4ae3e0d',
+      tag: 'v1.0.0',
+      anyOtherField: 'anyValue',
     }
   });
 });

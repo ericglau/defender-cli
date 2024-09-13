@@ -1,7 +1,7 @@
 import { promises as fs } from 'fs';
 
 import { Network } from '@openzeppelin/defender-sdk-base-client';
-import { DeployClient, DeployContractRequest, DeploymentResponse, SourceCodeLicense, TxOverrides } from '@openzeppelin/defender-sdk-deploy-client';
+import { DeployClient, DeployContractRequest, DeploymentResponse, DeployMetadata, SourceCodeLicense, TxOverrides } from '@openzeppelin/defender-sdk-deploy-client';
 
 export interface FunctionArgs {
   contractName: string;
@@ -15,6 +15,7 @@ export interface FunctionArgs {
   salt?: string;
   createFactoryAddress?: string;
   txOverrides?: TxOverrides;
+  metadata?: DeployMetadata;
 }
 
 export async function deployContract(args: FunctionArgs, client: DeployClient) {
@@ -32,6 +33,7 @@ export async function deployContract(args: FunctionArgs, client: DeployClient) {
     salt: args.salt,
     createFactoryAddress: args.createFactoryAddress,
     txOverrides: args.txOverrides,
+    metadata: args.metadata,
   };
 
   let deployment: DeploymentResponse;

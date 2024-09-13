@@ -10,8 +10,8 @@ test('getNetwork finds network', async t => {
       return [];
     },
   };
-  const network = await getNetwork(0x05, fakeNetworkClient);
-  t.is(network, 'goerli');
+  const network = await getNetwork(0x01, fakeNetworkClient);
+  t.is(network, 'mainnet');
 });
 
 test('getNetwork cannot find network', async t => {
