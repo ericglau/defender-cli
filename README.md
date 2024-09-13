@@ -47,7 +47,7 @@ Run 'npx @openzeppelin/defender-deploy-client-cli <COMMAND> --help' for more inf
 
 ### Deploying a contract
 ```
-npx @openzeppelin/defender-deploy-client-cli deploy --contractName <CONTRACT_NAME> --contractPath <CONTRACT_PATH> --chainId <CHAIN_ID> --buildInfoFile <BUILD_INFO_FILE_PATH> [--constructorBytecode <CONSTRUCTOR_ARGS>] [--licenseType <LICENSE>] [--verifySourceCode <true|false>] [--relayerId <RELAYER_ID>] [--salt <SALT>] [--createFactoryAddress <CREATE_FACTORY_ADDRESS>] [--gasLimit <GAS_LIMIT>] [--gasPrice <GAS_PRICE>] [--maxFeePerGas <MAX_FEE_PER_GAS>] [--maxPriorityFeePerGas <MAX_PRIORITY_FEE_PER_GAS>] [--metadata <METADATA>]
+npx @openzeppelin/defender-deploy-client-cli deploy --contractName <CONTRACT_NAME> --contractPath <CONTRACT_PATH> --chainId <CHAIN_ID> --buildInfoFile <BUILD_INFO_FILE_PATH> [--constructorBytecode <CONSTRUCTOR_ARGS>] [--licenseType '<LICENSE>'] [--verifySourceCode <true|false>] [--relayerId <RELAYER_ID>] [--salt <SALT>] [--createFactoryAddress <CREATE_FACTORY_ADDRESS>] [--gasLimit <GAS_LIMIT>] [--gasPrice <GAS_PRICE>] [--maxFeePerGas <MAX_FEE_PER_GAS>] [--maxPriorityFeePerGas <MAX_PRIORITY_FEE_PER_GAS>] [--metadata '<METADATA>']
 
 Deploys a contract using OpenZeppelin Defender.
 
@@ -59,7 +59,7 @@ Required options:
 
 Additional options:
   --constructorBytecode <CONSTRUCTOR_BYTECODE>  0x-prefixed ABI encoded byte string representing the constructor arguments. Required if the constructor has arguments.
-  --licenseType "<LICENSE>"         License type to display on block explorers for verified source code. See https://etherscan.io/contract-license-types for supported values and use the string found in brackets, e.g. "MIT"
+  --licenseType '<LICENSE>'         License type to display on block explorers for verified source code. See https://etherscan.io/contract-license-types for supported values and use the string found in brackets, e.g. 'MIT'
   --verifySourceCode <true|false>  Whether to verify source code on block explorers. Defaults to true.
   --relayerId <RELAYER_ID>        Relayer ID to use for deployment. Defaults to the relayer configured for your deployment environment on Defender.
   --salt <SALT>                   Salt to use for CREATE2 deployment. Defaults to a random salt.
@@ -68,7 +68,7 @@ Additional options:
   --gasPrice <GAS_PRICE>           Gas price for legacy transactions, in wei.
   --maxFeePerGas <MAX_FEE_PER_GAS>  Maximum total fee per gas, in wei.
   --maxPriorityFeePerGas <MAX_PRIORITY_FEE_PER_GAS>  Maximum priority fee per gas, in wei.
-  --metadata "<METADATA>"            Use this to identify, tag, or classify deployments. See https://docs.openzeppelin.com/defender/module/deploy#metadata. Must be a JSON string with escaped double quotes, for example: --metadata "{ \\"commitHash\\": \\"4ae3e0d\\", \\"tag\\": \\"v1.0.0\\", \\"anyOtherField\\": \\"anyValue\\" }"
+  --metadata '<METADATA>'            Use this to identify, tag, or classify deployments. See https://docs.openzeppelin.com/defender/module/deploy#metadata. Must be a JSON string, for example: --metadata '{ "commitHash": "4ae3e0d", "tag": "v1.0.0", "anyOtherField": "anyValue" }'
 
 ```
 
