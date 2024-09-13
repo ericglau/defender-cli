@@ -59,16 +59,16 @@ Required options:
 
 Additional options:
   --constructorBytecode <CONSTRUCTOR_BYTECODE>  0x-prefixed ABI encoded byte string representing the constructor arguments. Required if the constructor has arguments.
-  --licenseType '<LICENSE>'         License type to display on block explorers for verified source code. See https://etherscan.io/contract-license-types for supported values and use the string found in brackets, e.g. 'MIT'
+  --licenseType '<LICENSE>'       License type to display on block explorers for verified source code. See https://etherscan.io/contract-license-types for supported values and use the string found in brackets, e.g. 'MIT'
   --verifySourceCode <true|false>  Whether to verify source code on block explorers. Defaults to true.
   --relayerId <RELAYER_ID>        Relayer ID to use for deployment. Defaults to the relayer configured for your deployment environment on Defender.
   --salt <SALT>                   Salt to use for CREATE2 deployment. Defaults to a random salt.
   --createFactoryAddress <CREATE_FACTORY_ADDRESS>  Address of the CREATE2 factory to use for deployment. Defaults to the factory provided by Defender.
-  --gasLimit <GAS_LIMIT>           Maximum amount of gas to allow the deployment transaction to use.
-  --gasPrice <GAS_PRICE>           Gas price for legacy transactions, in wei.
+  --gasLimit <GAS_LIMIT>          Maximum amount of gas to allow the deployment transaction to use.
+  --gasPrice <GAS_PRICE>          as price for legacy transactions, in wei.
   --maxFeePerGas <MAX_FEE_PER_GAS>  Maximum total fee per gas, in wei.
   --maxPriorityFeePerGas <MAX_PRIORITY_FEE_PER_GAS>  Maximum priority fee per gas, in wei.
-  --metadata '<METADATA>'            Use this to identify, tag, or classify deployments. See https://docs.openzeppelin.com/defender/module/deploy#metadata. Must be a JSON string, for example: --metadata '{ "commitHash": "4ae3e0d", "tag": "v1.0.0", "anyOtherField": "anyValue" }'
+  --metadata '<METADATA>'         Use this to identify, tag, or classify deployments. See https://docs.openzeppelin.com/defender/module/deploy#metadata. Must be a JSON string, for example: --metadata '{ "commitHash": "4ae3e0d", "tag": "v1.0.0", "anyOtherField": "anyValue" }'
 
 ```
 
