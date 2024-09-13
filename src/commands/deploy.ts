@@ -99,8 +99,7 @@ async function getFunctionArgs(parsedArgs: minimist.ParsedArgs, extraArgs: strin
       maxPriorityFeePerGas: parseHexOrUndefined(getAndValidateString(parsedArgs, 'maxPriorityFeePerGas')),
     };
 
-    const metadataString = getAndValidateString(parsedArgs, 'metadata');
-    const metadata: DeployMetadata = metadataString !== undefined ? JSON.parse(metadataString) : undefined;
+    const metadata = getAndValidateJsonString(parsedArgs, 'metadata');
 
     checkInvalidArgs(parsedArgs);
 
@@ -153,6 +152,19 @@ function parseHexOrUndefined(value?: string): string | undefined {
 function parseNumberOrUndefined(value?: string): number | undefined {
   if (value !== undefined) {
     return Number(value);
+  } else {
+    return undefined;
+  }
+}
+
+function getAndValidateJsonString(parsedArgs: minimist.ParsedArgs, option: string): DeployMetadata | undefined {
+  const value = getAndValidateString(parsedArgs, option);
+  if (value !== undefined) {
+    try {
+      return JSON.parse(value);
+    } catch (e: any) {
+      throw new Error(`Failed to parse ${option} option as JSON: ${e.message}`);
+    }
   } else {
     return undefined;
   }

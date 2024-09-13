@@ -132,3 +132,16 @@ test('deploy all args', async t => {
     }
   });
 });
+
+test('deploy with invalid metadata JSON', async t => {
+  const args = [
+      '--contractName', 'MyContract',
+      '--contractPath', 'contracts/MyContract.sol',
+      '--chainId', FAKE_CHAIN_ID,
+      '--buildInfoFile', 'test/input/build-info.json',
+      '--metadata', 'v1.0.0', // not valid JSON
+    ];
+
+  const error = await t.throwsAsync(deploy(args, t.context.fakeDeployClient, t.context.fakeNetworkClient));
+  t.true(error.message.includes('Failed to parse metadata option as JSON'), error.message);
+});
