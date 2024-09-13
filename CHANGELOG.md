@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-- Add `--metadata` option.
+- Add `--metadata` option. ([#13](https://github.com/OpenZeppelin/defender-deploy-client-cli/pull/13))
 
 ## 0.0.1-alpha.7 (2024-05-02)
 
