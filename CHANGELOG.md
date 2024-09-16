@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.1-alpha.9 (2024-09-16)
+
+- Fix packaging.
+
 ## 0.0.1-alpha.8 (2024-09-16)
 
 - Add `--metadata` option. ([#13](https://github.com/OpenZeppelin/defender-deploy-client-cli/pull/13))
