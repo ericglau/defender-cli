@@ -2,7 +2,7 @@
 
 ## 0.0.1-alpha.9 (2024-09-16)
 
-- Fix packaging.
+- Fix packaging. ([#15](https://github.com/OpenZeppelin/defender-deploy-client-cli/pull/15))
 
 ## 0.0.1-alpha.8 (2024-09-16)
 
