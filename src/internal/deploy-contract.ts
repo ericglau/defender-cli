@@ -16,6 +16,7 @@ export interface FunctionArgs {
   createFactoryAddress?: string;
   txOverrides?: TxOverrides;
   metadata?: DeployMetadata;
+  origin?: DeployContractRequest['origin'];
 }
 
 export async function deployContract(args: FunctionArgs, client: DeployClient) {
@@ -34,6 +35,7 @@ export async function deployContract(args: FunctionArgs, client: DeployClient) {
     createFactoryAddress: args.createFactoryAddress,
     txOverrides: args.txOverrides,
     metadata: args.metadata,
+    origin: args.origin,
   };
 
   let deployment: DeploymentResponse;

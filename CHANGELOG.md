@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.1-alpha.10 (2025-01-13)
+
+- Update Defender SDK to v2.1.0, enable internal `origin` option for Defender deployments.
+- **Breaking changes:**
+  - Requires Node 18 or higher.
+
 ## 0.0.1-alpha.9 (2024-09-16)
 
 - Fix packaging. ([#15](https://github.com/OpenZeppelin/defender-deploy-client-cli/pull/15))
