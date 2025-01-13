@@ -47,7 +47,7 @@ Run 'npx @openzeppelin/defender-deploy-client-cli <COMMAND> --help' for more inf
 
 ### Deploying a contract
 ```
-npx @openzeppelin/defender-deploy-client-cli deploy --contractName <CONTRACT_NAME> --contractPath <CONTRACT_PATH> --chainId <CHAIN_ID> --buildInfoFile <BUILD_INFO_FILE_PATH> [--constructorBytecode <CONSTRUCTOR_ARGS>] [--licenseType '<LICENSE>'] [--verifySourceCode <true|false>] [--relayerId <RELAYER_ID>] [--salt <SALT>] [--createFactoryAddress <CREATE_FACTORY_ADDRESS>] [--gasLimit <GAS_LIMIT>] [--gasPrice <GAS_PRICE>] [--maxFeePerGas <MAX_FEE_PER_GAS>] [--maxPriorityFeePerGas <MAX_PRIORITY_FEE_PER_GAS>] [--metadata '<METADATA>']
+npx @openzeppelin/defender-deploy-client-cli deploy --contractName <CONTRACT_NAME> --contractPath <CONTRACT_PATH> --chainId <CHAIN_ID> --buildInfoFile <BUILD_INFO_FILE_PATH> [--constructorBytecode <CONSTRUCTOR_ARGS>] [--licenseType '<LICENSE>'] [--verifySourceCode <true|false>] [--relayerId <RELAYER_ID>] [--salt <SALT>] [--createFactoryAddress <CREATE_FACTORY_ADDRESS>] [--gasLimit <GAS_LIMIT>] [--gasPrice <GAS_PRICE>] [--maxFeePerGas <MAX_FEE_PER_GAS>] [--maxPriorityFeePerGas <MAX_PRIORITY_FEE_PER_GAS>] [--metadata '<METADATA>'] [--origin '<ORIGIN>']
 
 Deploys a contract using OpenZeppelin Defender.
 
@@ -69,7 +69,7 @@ Additional options:
   --maxFeePerGas <MAX_FEE_PER_GAS>  Maximum total fee per gas, in wei.
   --maxPriorityFeePerGas <MAX_PRIORITY_FEE_PER_GAS>  Maximum priority fee per gas, in wei.
   --metadata '<METADATA>'         Use this to identify, tag, or classify deployments. See https://docs.openzeppelin.com/defender/module/deploy#metadata. Must be a JSON string, for example: --metadata '{ "commitHash": "4ae3e0d", "tag": "v1.0.0", "anyOtherField": "anyValue" }'
-
+  --origin <ORIGIN>               The client that made the deployment. For internal use only. Only 'Foundry' or 'SDK' are supported. Defaults to 'SDK'.
 ```
 
 ### Proposing an upgrade

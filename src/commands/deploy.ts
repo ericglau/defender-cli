@@ -2,10 +2,10 @@ import minimist from 'minimist';
 import { FunctionArgs, deployContract } from '../internal/deploy-contract';
 import { getDeployClient } from '../internal/client';
 import { USAGE_COMMAND_PREFIX, getAndValidateString, getNetwork } from '../internal/utils';
-import { DeployClient, DeployMetadata, TxOverrides } from '@openzeppelin/defender-sdk-deploy-client';
+import { DeployClient, DeploymentResponse, DeployMetadata, TxOverrides } from '@openzeppelin/defender-sdk-deploy-client';
 import { NetworkClient } from '@openzeppelin/defender-sdk-network-client';
 
-const USAGE = `${USAGE_COMMAND_PREFIX} deploy --contractName <CONTRACT_NAME> --contractPath <CONTRACT_PATH> --chainId <CHAIN_ID> --buildInfoFile <BUILD_INFO_FILE_PATH> [--constructorBytecode <CONSTRUCTOR_ARGS>] [--licenseType <LICENSE>] [--verifySourceCode <true|false>] [--relayerId <RELAYER_ID>] [--salt <SALT>] [--createFactoryAddress <CREATE_FACTORY_ADDRESS>] [--gasLimit <GAS_LIMIT>] [--gasPrice <GAS_PRICE>] [--maxFeePerGas <MAX_FEE_PER_GAS>] [--maxPriorityFeePerGas <MAX_PRIORITY_FEE_PER_GAS>] [--metadata <METADATA>]`;
+const USAGE = `${USAGE_COMMAND_PREFIX} deploy --contractName <CONTRACT_NAME> --contractPath <CONTRACT_PATH> --chainId <CHAIN_ID> --buildInfoFile <BUILD_INFO_FILE_PATH> [--constructorBytecode <CONSTRUCTOR_ARGS>] [--licenseType <LICENSE>] [--verifySourceCode <true|false>] [--relayerId <RELAYER_ID>] [--salt <SALT>] [--createFactoryAddress <CREATE_FACTORY_ADDRESS>] [--gasLimit <GAS_LIMIT>] [--gasPrice <GAS_PRICE>] [--maxFeePerGas <MAX_FEE_PER_GAS>] [--maxPriorityFeePerGas <MAX_PRIORITY_FEE_PER_GAS>] [--metadata <METADATA>] [--origin <ORIGIN>]`;
 const DETAILS = `
 Deploys a contract using OpenZeppelin Defender.
 
@@ -27,6 +27,7 @@ Additional options:
   --maxFeePerGas <MAX_FEE_PER_GAS>  Maximum total fee per gas, in wei.
   --maxPriorityFeePerGas <MAX_PRIORITY_FEE_PER_GAS>  Maximum priority fee per gas, in wei.
   --metadata '<METADATA>'         Use this to identify, tag, or classify deployments. See https://docs.openzeppelin.com/defender/module/deploy#metadata. Must be a JSON string, for example: --metadata '{ "commitHash": "4ae3e0d", "tag": "v1.0.0", "anyOtherField": "anyValue" }'
+  --origin <ORIGIN>               The client that made the deployment. For internal use only. Only 'Foundry' or 'SDK' are supported. Defaults to 'SDK'.
 `;
 
 export async function deploy(args: string[], deployClient?: DeployClient, networkClient?: NetworkClient): Promise<void> {
@@ -47,7 +48,7 @@ function parseArgs(args: string[]) {
       'help',
       'verifySourceCode',
     ],
-    string: ['contractName', 'contractPath', 'chainId', 'buildInfoFile', 'licenseType', 'constructorBytecode', 'relayerId', 'salt', 'createFactoryAddress', 'gasLimit', 'gasPrice', 'maxFeePerGas', 'maxPriorityFeePerGas', 'metadata'],
+    string: ['contractName', 'contractPath', 'chainId', 'buildInfoFile', 'licenseType', 'constructorBytecode', 'relayerId', 'salt', 'createFactoryAddress', 'gasLimit', 'gasPrice', 'maxFeePerGas', 'maxPriorityFeePerGas', 'metadata', 'origin'],
 
     alias: { h: 'help' },
     default: { verifySourceCode: true },
@@ -100,10 +101,11 @@ async function getFunctionArgs(parsedArgs: minimist.ParsedArgs, extraArgs: strin
     };
 
     const metadata = getAndValidateJsonString(parsedArgs, 'metadata');
+    const origin = getAndValidateOrigin(parsedArgs, 'origin');
 
     checkInvalidArgs(parsedArgs);
 
-    return { contractName, contractPath, network, buildInfoFile, licenseType, constructorBytecode, verifySourceCode, relayerId, salt, createFactoryAddress, txOverrides, metadata };
+    return { contractName, contractPath, network, buildInfoFile, licenseType, constructorBytecode, verifySourceCode, relayerId, salt, createFactoryAddress, txOverrides, metadata, origin };
   }
 }
 
@@ -129,6 +131,7 @@ function checkInvalidArgs(parsedArgs: minimist.ParsedArgs) {
         'maxFeePerGas',
         'maxPriorityFeePerGas',
         'metadata',
+        'origin',
       ].includes(key),
   );
   if (invalidArgs.length > 0) {
@@ -165,6 +168,19 @@ function getAndValidateJsonString(parsedArgs: minimist.ParsedArgs, option: strin
     } catch (e: any) {
       throw new Error(`Failed to parse ${option} option as JSON: ${e.message}`);
     }
+  } else {
+    return undefined;
+  }
+}
+
+function getAndValidateOrigin(parsedArgs: minimist.ParsedArgs, option: string): DeploymentResponse['origin'] | undefined {
+  const value = getAndValidateString(parsedArgs, option);
+  const supportedOrigins: DeploymentResponse['origin'][] = ['Foundry', 'SDK'];
+  if (value !== undefined) {
+    if (!supportedOrigins.includes(value as DeploymentResponse['origin'])) {
+      throw new Error(`Option --${option} only supports 'Foundry' or 'SDK'`);
+    }
+    return value as DeploymentResponse['origin'];
   } else {
     return undefined;
   }
